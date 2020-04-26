@@ -1,50 +1,52 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(TripMate());
 
 /// This Widget is the main application widget.
-class MyApp extends StatelessWidget {
-  static const String _title = 'Flutter Code Sample';
+class TripMate extends StatelessWidget {
+  static const String _title = 'TripMate';
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: _title,
       theme: ThemeData(fontFamily: 'GoogleSans'),
-      home: MyStatefulWidget(),
+      home: BottomNavState(),
     );
   }
 }
 
-class MyStatefulWidget extends StatefulWidget {
-  MyStatefulWidget({Key key}) : super(key: key);
+class BottomNavState extends StatefulWidget {
+  BottomNavState({Key key}) : super(key: key);
 
   @override
-  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
+  _BottomNavStateState createState() => _BottomNavStateState();
 }
 
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
+class _BottomNavStateState extends State<BottomNavState> {
+  int _selectedItem = 0;
+
+  static const TextStyle itemStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.w100);
+
+  static const List<Widget> _widgetItems = <Widget>[
     Text(
-      'Index 0: Home',
-      style: optionStyle,
+      'Location',
+      style: itemStyle,
     ),
     Text(
-      'Index 1: Business',
-      style: optionStyle,
+      'Trips',
+      style: itemStyle,
     ),
     Text(
-      'Index 2: School',
-      style: optionStyle,
+      'Account',
+      style: itemStyle,
     ),
   ];
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _selectedItem = index;
     });
   }
 
@@ -52,30 +54,42 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('BottomNavigationBar Sample'),
+        title: const Text(
+          'TripMate',
+          style: TextStyle(
+            color: Color.fromRGBO(0, 0, 0, 1),
+          ),
+        ),
+        backgroundColor: Color.fromRGBO(255, 255, 255, 1),
+        elevation: 0,
+        centerTitle: true,
       ),
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: _widgetItems.elementAt(_selectedItem),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Home'),
+            icon: Icon(Icons.explore),
+            title: Text('Location'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            title: Text('Business'),
+            icon: Icon(Icons.event),
+            title: Text('Trips'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            title: Text('School'),
+            icon: Icon(Icons.account_circle),
+            title: Text('Account'),
           ),
         ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        currentIndex: _selectedItem,
+        selectedItemColor: Colors.blue[800],
         onTap: _onItemTapped,
+        unselectedFontSize: 13,
+        selectedFontSize: 13,
+        backgroundColor: Colors.white,
       ),
+      backgroundColor: Colors.white,
     );
   }
 }

@@ -12,7 +12,7 @@ class LoginCard extends StatelessWidget {
         child: Container(
           width: 350,
           height: 600,
-          child: Text('A card that can be tapped'),
+          child: Text('Put things here'),
         ),
       ),
     );

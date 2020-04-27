@@ -4,8 +4,8 @@ class Trip {
   String title;
   double budget;
   String notes;
-  DateTime startDate;
-  DateTime endDate;
+  String startDate;
+  String endDate;
   DocumentReference user;
   DocumentReference location;
   DocumentReference reference;
@@ -20,8 +20,8 @@ class Trip {
       this.user});
 
   Trip.fromMap(Map<String, dynamic> map, {this.reference})
-      : assert(map['name'] != null),
-        title = map['name'],
+      : assert(map['title'] != null),
+        title = map['title'],
         assert(map['budget'] != null),
         budget = map['budget'],
         assert(map['notes'] != null),

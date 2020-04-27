@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tripmate/widgets/Login.dart';
+import 'package:tripmate/widgets/TripList.dart';
 
 void main() => runApp(TripMate());
 
@@ -35,10 +36,7 @@ class _BottomNavStateState extends State<BottomNavState> {
       'Explore',
       style: itemStyle,
     ),
-    Text(
-      'Trips',
-      style: itemStyle,
-    ),
+    Trips(),
     LoginCard(),
   ];
 

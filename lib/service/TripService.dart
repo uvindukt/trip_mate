@@ -3,21 +3,17 @@ import 'package:tripmate/model/Trip.dart';
 
 class TripService {
   String collectionName;
-  DocumentReference userReference;
 
   TripService(this.collectionName);
 
   // Get trips of an user.
   getTrips() {
-    return Firestore.instance
-        .collection(collectionName)
-        .where('user', isEqualTo: userReference)
-        .snapshots();
+    return Firestore.instance.collection(collectionName).snapshots();
   }
 
   // Add a new trip.
-  addTrip(String title, String notes, double budget, DateTime startDate,
-      DateTime endDate, DocumentReference location, DocumentReference user) {
+  addTrip(String title, String notes, double budget, String startDate,
+      String endDate, DocumentReference location, DocumentReference user) {
     Trip trip = Trip(
         title: title,
         notes: notes,

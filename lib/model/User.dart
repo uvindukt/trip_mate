@@ -6,13 +6,11 @@ class User {
   List<DocumentReference> trips;
   DocumentReference reference;
 
-  User({this.name, this.password});
+  User({this.name});
 
   User.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['name'] != null),
         name = map['name'],
-        assert(map['password'] != null),
-        password = map['password'],
         assert(map['trips'] != null),
         trips = map['trips'];
 

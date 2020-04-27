@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tripmate/widgets/Login.dart';
 
 void main() => runApp(TripMate());
 
@@ -29,19 +30,16 @@ class _BottomNavStateState extends State<BottomNavState> {
   static const TextStyle itemStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.w100);
 
-  static const List<Widget> _widgetItems = <Widget>[
+  static List<Widget> _widgetItems = <Widget>[
     Text(
-      'Location',
+      'Explore',
       style: itemStyle,
     ),
     Text(
       'Trips',
       style: itemStyle,
     ),
-    Text(
-      'Account',
-      style: itemStyle,
-    ),
+    LoginCard(),
   ];
 
   void _onItemTapped(int index) {
@@ -71,7 +69,7 @@ class _BottomNavStateState extends State<BottomNavState> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.explore),
-            title: Text('Location'),
+            title: Text('Explore'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.event),

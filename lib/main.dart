@@ -73,7 +73,7 @@ class _BottomNavStateState extends State<BottomNavState> {
               fontSize: 24.0,
               letterSpacing: 0.25),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
         brightness: Brightness.dark,

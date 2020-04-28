@@ -12,15 +12,14 @@ class TripService {
   }
 
   // Add a new trip.
-  addTrip(String title, String notes, double budget, String startDate,
-      String endDate, String location) {
+  addTrip(
+      String title, String notes, num budget, String date, String location) {
     Trip trip = Trip(
         title: title,
         notes: notes,
         budget: budget,
         location: location,
-        startDate: startDate,
-        endDate: endDate);
+        date: date);
 
     try {
       Firestore.instance.runTransaction((Transaction transaction) async {

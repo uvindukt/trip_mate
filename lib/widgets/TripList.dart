@@ -44,7 +44,7 @@ class TripsState extends State<Trips> {
     final trip = Trip.fromSnapshot(data);
     return Padding(
       key: ValueKey(trip.title),
-      padding: EdgeInsets.symmetric(vertical: 5),
+      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       child: Card(
         elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -78,7 +78,10 @@ class TripsState extends State<Trips> {
                   ),
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.6,
+                  width:
+                      MediaQuery.of(context).orientation == Orientation.portrait
+                          ? MediaQuery.of(context).size.width * 0.6
+                          : MediaQuery.of(context).size.width * 0.8,
                   height: 21,
                   child: Padding(
                       padding: EdgeInsets.fromLTRB(20, 0, 0, 6),
@@ -102,7 +105,10 @@ class TripsState extends State<Trips> {
                       )),
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.6,
+                  width:
+                      MediaQuery.of(context).orientation == Orientation.portrait
+                          ? MediaQuery.of(context).size.width * 0.6
+                          : MediaQuery.of(context).size.width * 0.8,
                   height: 15,
                   child: Padding(
                       padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
@@ -119,14 +125,19 @@ class TripsState extends State<Trips> {
                             ),
                           ),
                           Text(
-                            trip.startDate,
+                            trip.date,
                             style: TextStyle(color: Colors.grey),
                           ),
                         ],
                       )),
                 ),
-                Container(
-                    width: MediaQuery.of(context).size.width * 0.6,
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Container(
+                    width: MediaQuery.of(context).orientation ==
+                            Orientation.portrait
+                        ? MediaQuery.of(context).size.width * 0.6
+                        : MediaQuery.of(context).size.width * 0.8,
                     height: 54,
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
@@ -147,7 +158,9 @@ class TripsState extends State<Trips> {
                           ),
                         ],
                       ),
-                    )),
+                    ),
+                  ),
+                )
               ],
             ),
           ],
@@ -159,17 +172,11 @@ class TripsState extends State<Trips> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Flexible(
             child: buildBody(context),
           ),
-          Container(
-            height: 150,
-          )
         ],
       ),
     );

@@ -2,20 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Trip {
   String title;
-  double budget;
+  num budget;
   String notes;
-  String startDate;
-  String endDate;
+  String date;
   String location;
   DocumentReference reference;
 
-  Trip(
-      {this.title,
-      this.budget,
-      this.notes,
-      this.location,
-      this.startDate,
-      this.endDate});
+  Trip({this.title, this.budget, this.notes, this.location, this.date});
 
   Trip.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['title'] != null),
@@ -24,10 +17,8 @@ class Trip {
         budget = map['budget'],
         assert(map['notes'] != null),
         notes = map['notes'],
-        assert(map['startDate'] != null),
-        startDate = map['startDate'],
-        assert(map['endDate'] != null),
-        endDate = map['endDate'],
+        assert(map['date'] != null),
+        date = map['date'],
         assert(map['location'] != null),
         location = map['location'];
 
@@ -36,11 +27,10 @@ class Trip {
 
   toJson() {
     return {
-      'name': title,
+      'title': title,
       'budget': budget,
       'notes': notes,
-      'startDate': startDate,
-      'endDate': endDate,
+      'date': date,
       'location': location
     };
   }

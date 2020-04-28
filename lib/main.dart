@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tripmate/service/SearchService.dart';
 import 'package:tripmate/widgets/LocationList.dart';
 import 'package:tripmate/widgets/Login.dart';
 import 'package:tripmate/widgets/NewTrip.dart';
@@ -72,10 +73,22 @@ class _BottomNavStateState extends State<BottomNavState> {
               fontSize: 24.0,
               letterSpacing: 0.25),
         ),
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
         brightness: Brightness.dark,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.favorite, color: Colors.black45),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: Icon(Icons.search, color: Colors.black45),
+            onPressed: () {
+              showSearch(context: context, delegate: SearchService());
+            },
+          ),
+        ],
       ),
       body: Center(
         child: _widgetItems.elementAt(_selectedItem),

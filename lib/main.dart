@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tripmate/widgets/Login.dart';
 import 'package:tripmate/widgets/TripList.dart';
+import 'package:tripmate/widgets/LocationList.dart';
 
 void main() => runApp(TripMate());
 
@@ -12,6 +13,7 @@ class TripMate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: _title,
       theme: ThemeData(fontFamily: 'GoogleSans'),
       home: BottomNavState(),
@@ -33,10 +35,7 @@ class _BottomNavStateState extends State<BottomNavState> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.w100);
 
   static List<Widget> _widgetItems = <Widget>[
-    Text(
-      'Explore',
-      style: itemStyle,
-    ),
+    Locations(),
     Trips(),
     LoginCard(),
   ];
@@ -55,6 +54,8 @@ class _BottomNavStateState extends State<BottomNavState> {
           'TripMate',
           style: TextStyle(
             color: Color.fromRGBO(0, 0, 0, 1),
+            fontSize: 20.0,
+            letterSpacing: 0.25
           ),
         ),
         backgroundColor: Colors.transparent,

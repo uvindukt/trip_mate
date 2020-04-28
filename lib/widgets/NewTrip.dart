@@ -49,7 +49,7 @@ class NewTripState extends State<NewTrip> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        brightness: Brightness.dark,
+        brightness: Brightness.light,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
@@ -139,7 +139,7 @@ class NewTripState extends State<NewTrip> {
                           }
                           if (snapshot.hasData) {
                             print(
-                                "Documents ${snapshot.data.documents.length}");
+                                "Locations ${snapshot.data.documents.length}");
                             return Padding(
                               padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                               child: Row(

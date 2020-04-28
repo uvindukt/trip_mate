@@ -1,6 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tripmate/model/Location.dart';
 import 'package:tripmate/service/LocationService.dart';
 
@@ -21,7 +21,7 @@ class _LocationsState extends State<Locations> {
           return Text('Error ${snapshot.error}');
         }
         if (snapshot.hasData) {
-          print("Documents ${snapshot.data.documents.length}");
+          print("Locations ${snapshot.data.documents.length}");
           return buildList(context, snapshot.data.documents);
         }
         return CircularProgressIndicator();
@@ -44,7 +44,7 @@ class _LocationsState extends State<Locations> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
-        elevation: 5,
+        elevation: 2,
         margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
         child: Container(
           height: MediaQuery.of(context).size.width * 2 / 4,
@@ -56,7 +56,7 @@ class _LocationsState extends State<Locations> {
           ),
           child: Container(
             alignment: Alignment.bottomCenter,
-            child:Container(
+            child: Container(
               padding: EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 gradient: LinearGradient(

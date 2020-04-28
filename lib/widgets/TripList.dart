@@ -26,7 +26,7 @@ class TripsState extends State<Trips> {
           return Text('Error ${snapshot.error}');
         }
         if (snapshot.hasData) {
-          print("Documents ${snapshot.data.documents.length}");
+          print("Trips ${snapshot.data.documents.length}");
           return buildList(context, snapshot.data.documents);
         }
         return CircularProgressIndicator();
@@ -34,16 +34,20 @@ class TripsState extends State<Trips> {
     );
   }
 
+  Widget getBottomSpace() => Container(height: 80);
+
   Widget buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
+    var list = snapshot.map((data) => buildListItem(context, data)).toList();
+    list.add(getBottomSpace());
     return ListView(
-      children: snapshot.map((data) => buildListItem(context, data)).toList(),
+      children: list,
     );
   }
 
   Widget buildListItem(BuildContext context, DocumentSnapshot data) {
     final trip = Trip.fromSnapshot(data);
     return Padding(
-      key: ValueKey(trip.title),
+      key: ValueKey(data.documentID),
       padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       child: Card(
         elevation: 2,
@@ -51,7 +55,10 @@ class TripsState extends State<Trips> {
         child: Row(
           children: <Widget>[
             Container(
-                width: 130,
+                width:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? MediaQuery.of(context).size.width * 0.33
+                        : MediaQuery.of(context).size.width * 0.16,
                 height: 130,
                 child: ClipRRect(
                   borderRadius: BorderRadius.only(
@@ -67,7 +74,10 @@ class TripsState extends State<Trips> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.6,
+                  width:
+                      MediaQuery.of(context).orientation == Orientation.portrait
+                          ? MediaQuery.of(context).size.width * 0.6
+                          : MediaQuery.of(context).size.width * 0.8,
                   height: 40,
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(20, 10, 0, 0),

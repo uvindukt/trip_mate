@@ -67,7 +67,7 @@ class TripsState extends State<Trips> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.57,
+                  width: MediaQuery.of(context).size.width * 0.6,
                   height: 40,
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
@@ -78,19 +78,56 @@ class TripsState extends State<Trips> {
                   ),
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.57,
-                  height: 30,
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  height: 21,
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                    child: Text(
-                      trip.location,
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                  ),
+                      padding: EdgeInsets.fromLTRB(20, 0, 0, 6),
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(right: 4.0, bottom: 1.0),
+                            child: Container(
+                              child: Icon(
+                                Icons.location_on,
+                                color: Colors.grey,
+                                size: 16,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            trip.location,
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      )),
                 ),
                 Container(
-                    width: MediaQuery.of(context).size.width * 0.57,
-                    height: 60,
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  height: 15,
+                  child: Padding(
+                      padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(right: 4.0, bottom: 1.0),
+                            child: Container(
+                              child: Icon(
+                                Icons.event,
+                                color: Colors.grey,
+                                size: 16,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            trip.startDate,
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      )),
+                ),
+                Container(
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    height: 54,
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                       child: ButtonBar(
@@ -122,13 +159,16 @@ class TripsState extends State<Trips> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20.0),
+      padding: EdgeInsets.all(10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Flexible(
             child: buildBody(context),
+          ),
+          Container(
+            height: 150,
           )
         ],
       ),

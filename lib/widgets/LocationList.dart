@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tripmate/model/Location.dart';
 import 'package:tripmate/service/LocationService.dart';
+import 'package:tripmate/widgets/PlaceList.dart';
 
 class Locations extends StatefulWidget {
   @override
@@ -46,47 +47,60 @@ class _LocationsState extends State<Locations> {
         ),
         elevation: 2,
         margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
-        child: Container(
-          height: MediaQuery.of(context).size.width * 2 / 4,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(location.image),
-              fit: BoxFit.fitWidth,
-            ),
-          ),
+        child: InkWell(
           child: Container(
-            alignment: Alignment.bottomCenter,
+            height: MediaQuery.of(context).size.width * 2 / 4,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(location.image),
+                fit: BoxFit.fitWidth,
+              ),
+            ),
             child: Container(
-              padding: EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  colors: <Color>[
-                    Colors.black.withAlpha(0),
-                    Colors.black38,
-                    Colors.black45
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                padding: EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: <Color>[
+                      Colors.black.withAlpha(0),
+                      Colors.black38,
+                      Colors.black45
+                    ],
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      location.name,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    Icon(
+                      Icons.location_on,
+                      color: Colors.white70,
+                    )
                   ],
                 ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    location.name,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                    ),
-                  ),
-                  Icon(
-                    Icons.location_on,
-                    color: Colors.white70,
-                  )
-                ],
-              ),
             ),
           ),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Places(
+                      docId: data.documentID,
+                      location: location.name,
+                    )
+                )
+            );
+          },
         ),
       ),
     );

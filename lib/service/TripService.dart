@@ -13,7 +13,7 @@ class TripService {
 
   // Add a new trip.
   addTrip(String title, String notes, double budget, String startDate,
-      String endDate, DocumentReference location) {
+      String endDate, String location) {
     Trip trip = Trip(
         title: title,
         notes: notes,

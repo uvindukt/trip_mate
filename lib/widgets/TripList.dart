@@ -44,46 +44,78 @@ class TripsState extends State<Trips> {
     final trip = Trip.fromSnapshot(data);
     return Padding(
       key: ValueKey(trip.title),
-      padding: EdgeInsets.symmetric(vertical: 8.0),
+      padding: EdgeInsets.symmetric(vertical: 5),
       child: Card(
-          elevation: 2,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(0, 8, 5, 0),
-            child: Column(
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: Row(
+          children: <Widget>[
+            Container(
+                width: 130,
+                height: 130,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      bottomLeft: Radius.circular(10)),
+                  child: FittedBox(
+                    child: Image.asset(
+                        'assets/images/location-${trip.location.toLowerCase()}.jpg'),
+                    fit: BoxFit.fill,
+                  ),
+                )),
+            Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                ListTile(
-                  leading: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      'http://getdrawings.com/free-icon/google-map-pin-icon-png-68.png',
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.57,
+                  height: 40,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                    child: Text(
+                      trip.title,
+                      style: TextStyle(fontSize: 18),
                     ),
                   ),
-                  title: Text(trip.title),
-                  subtitle: Text(trip.notes),
-                  isThreeLine: true,
                 ),
-                ButtonBar(
-                  children: <Widget>[
-                    FlatButton(
-                      child: const Text('UPDATE'),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5)),
-                      onPressed: () {/* ... */},
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.57,
+                  height: 30,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                    child: Text(
+                      trip.location,
+                      style: TextStyle(color: Colors.grey),
                     ),
-                    FlatButton(
-                      child: const Text('DELETE'),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5)),
-                      onPressed: () {/* ... */},
-                    ),
-                  ],
+                  ),
                 ),
+                Container(
+                    width: MediaQuery.of(context).size.width * 0.57,
+                    height: 60,
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      child: ButtonBar(
+                        alignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          FlatButton(
+                            child: const Text('VIEW'),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5)),
+                            onPressed: () {/* ... */},
+                          ),
+                          FlatButton(
+                            child: const Text('DELETE'),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5)),
+                            onPressed: () {/* ... */},
+                          ),
+                        ],
+                      ),
+                    )),
               ],
             ),
-          )),
+          ],
+        ),
+      ),
     );
   }
 

@@ -6,7 +6,7 @@ class Trip {
   String notes;
   String startDate;
   String endDate;
-  DocumentReference location;
+  String location;
   DocumentReference reference;
 
   Trip(

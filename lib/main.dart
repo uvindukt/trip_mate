@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:tripmate/widgets/LocationList.dart';
+import 'package:tripmate/service/SearchService.dart';
 import 'package:tripmate/widgets/Login.dart';
 import 'package:tripmate/widgets/TripList.dart';
+import 'package:tripmate/widgets/LocationList.dart';
 
 void main() => runApp(TripMate());
 
@@ -46,19 +46,6 @@ class _BottomNavStateState extends State<BottomNavState> {
     });
   }
 
-  Widget buildTripFab() {
-    return _selectedItem == 1
-        ? FloatingActionButton.extended(
-            onPressed: () {
-              // Add your onPressed code here!
-            },
-            icon: Icon(Icons.pin_drop),
-            label: Text('New Trip'),
-            backgroundColor: Colors.green,
-          )
-        : null;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,19 +53,30 @@ class _BottomNavStateState extends State<BottomNavState> {
         title: const Text(
           'TripMate',
           style: TextStyle(
-              color: Color.fromRGBO(0, 0, 0, 1),
-              fontSize: 24.0,
-              letterSpacing: 0.25),
+            color: Color.fromRGBO(0, 0, 0, 1),
+            fontSize: 20.0,
+            letterSpacing: 0.25
+          ),
         ),
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color.fromRGBO(255, 255, 255, 1),
         elevation: 0,
         centerTitle: true,
-        brightness: Brightness.dark,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.favorite, color: Colors.black45),
+            onPressed: (){},
+          ),
+          IconButton(
+            icon: Icon(Icons.search, color: Colors.black45),
+            onPressed: (){
+              showSearch(context: context, delegate: SearchService());
+            },
+          ),
+        ],
       ),
       body: Center(
         child: _widgetItems.elementAt(_selectedItem),
       ),
-      floatingActionButton: buildTripFab(),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -101,6 +99,7 @@ class _BottomNavStateState extends State<BottomNavState> {
         selectedFontSize: 13,
         backgroundColor: Colors.white,
       ),
+      backgroundColor: Colors.white,
     );
   }
 }

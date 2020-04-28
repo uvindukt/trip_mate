@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tripmate/widgets/Login.dart';
 import 'package:tripmate/widgets/TripList.dart';
 
@@ -56,9 +57,10 @@ class _BottomNavStateState extends State<BottomNavState> {
             color: Color.fromRGBO(0, 0, 0, 1),
           ),
         ),
-        backgroundColor: Color.fromRGBO(255, 255, 255, 1),
+        backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
+        brightness: Brightness.dark,
       ),
       body: Center(
         child: _widgetItems.elementAt(_selectedItem),
@@ -85,7 +87,6 @@ class _BottomNavStateState extends State<BottomNavState> {
         selectedFontSize: 13,
         backgroundColor: Colors.white,
       ),
-      backgroundColor: Colors.white,
     );
   }
 }

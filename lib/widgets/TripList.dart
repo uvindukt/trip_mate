@@ -7,8 +7,6 @@ import 'package:tripmate/service/TripService.dart';
 class Trips extends StatefulWidget {
   Trips() : super();
 
-  final String title = "CloudFireStore Demo";
-
   @override
   TripsState createState() => TripsState();
 }
@@ -48,14 +46,44 @@ class TripsState extends State<Trips> {
       key: ValueKey(trip.title),
       padding: EdgeInsets.symmetric(vertical: 8.0),
       child: Card(
-        elevation: 5,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        child: ListTile(
-          title: Text(trip.title),
-          subtitle: Text(trip.notes),
-          contentPadding: EdgeInsets.all(15),
-        ),
-      ),
+          elevation: 2,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(0, 8, 5, 0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  leading: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(
+                      'http://getdrawings.com/free-icon/google-map-pin-icon-png-68.png',
+                    ),
+                  ),
+                  title: Text(trip.title),
+                  subtitle: Text(trip.notes),
+                  isThreeLine: true,
+                ),
+                ButtonBar(
+                  children: <Widget>[
+                    FlatButton(
+                      child: const Text('UPDATE'),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5)),
+                      onPressed: () {/* ... */},
+                    ),
+                    FlatButton(
+                      child: const Text('DELETE'),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5)),
+                      onPressed: () {/* ... */},
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          )),
     );
   }
 

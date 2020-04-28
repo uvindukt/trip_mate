@@ -13,12 +13,11 @@ class TripService {
 
   // Add a new trip.
   addTrip(String title, String notes, double budget, String startDate,
-      String endDate, DocumentReference location, DocumentReference user) {
+      String endDate, DocumentReference location) {
     Trip trip = Trip(
         title: title,
         notes: notes,
         budget: budget,
-        user: user,
         location: location,
         startDate: startDate,
         endDate: endDate);

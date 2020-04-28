@@ -6,7 +6,6 @@ class Trip {
   String notes;
   String startDate;
   String endDate;
-  DocumentReference user;
   DocumentReference location;
   DocumentReference reference;
 
@@ -16,8 +15,7 @@ class Trip {
       this.notes,
       this.location,
       this.startDate,
-      this.endDate,
-      this.user});
+      this.endDate});
 
   Trip.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['title'] != null),
@@ -31,9 +29,7 @@ class Trip {
         assert(map['endDate'] != null),
         endDate = map['endDate'],
         assert(map['location'] != null),
-        location = map['location'],
-        assert(map['user'] != null),
-        user = map['user'];
+        location = map['location'];
 
   Trip.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
@@ -45,8 +41,7 @@ class Trip {
       'notes': notes,
       'startDate': startDate,
       'endDate': endDate,
-      'location': location,
-      'user': user
+      'location': location
     };
   }
 }

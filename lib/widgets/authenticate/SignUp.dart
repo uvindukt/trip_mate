@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:tripmate/service/AuthService.dart';
 
-class SignIn extends StatefulWidget {
+class SignUp extends StatefulWidget {
   final Function toggleView;
 
-  const SignIn({Key key, this.toggleView}) : super(key: key);
+  const SignUp({Key key, this.toggleView}) : super(key: key);
 
   @override
-  _SignInState createState() => _SignInState();
+  _SignUpState createState() => _SignUpState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignUpState extends State<SignUp> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
 
@@ -23,7 +23,7 @@ class _SignInState extends State<SignIn> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Sign In',
+          'Sign Up',
           style: TextStyle(
               color: Color.fromRGBO(0, 0, 0, 1),
               fontSize: 24.0,
@@ -48,7 +48,7 @@ class _SignInState extends State<SignIn> {
             child: Column(
               children: <Widget>[
                 Image.asset(
-                  'assets/images/location-mirissa.jpg',
+                  'assets/images/location-badulla.jpg',
                   fit: BoxFit.fill,
                 ),
                 Container(
@@ -57,9 +57,9 @@ class _SignInState extends State<SignIn> {
                   child: Text(
                     'TripMate',
                     style: TextStyle(
-                      fontSize: 20.0,
-                      letterSpacing: 0.15,
-                      fontWeight: FontWeight.w500
+                        fontSize: 20.0,
+                        letterSpacing: 0.15,
+                        fontWeight: FontWeight.w500
                     ),
                   ),
                 ),
@@ -90,7 +90,7 @@ class _SignInState extends State<SignIn> {
                       labelText: 'Password',
                       prefixIcon: Icon(Icons.visibility),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(5.0))
+                          borderRadius: BorderRadius.all(Radius.circular(5.0))
                       ),
                     ),
                     obscureText: true,
@@ -105,17 +105,15 @@ class _SignInState extends State<SignIn> {
                   child: RaisedButton(
                       color: Colors.blue[800],
                       child: Text(
-                        'Login',
+                        'Register',
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
-                        if (_formKey.currentState.validate()) {
-                          dynamic result = _auth.signIn(email, password);
-                          if (result == null) {
-                            setState(() {
-                              error = 'User details don\'t mach';
-                            });
-                          }
+                        dynamic result = await _auth.signUp(email, password);
+                        if (result == null) {
+                          setState(() {
+                            error = 'Please enter a valid email';
+                          });
                         }
                       }
                   ),
@@ -134,9 +132,9 @@ class _SignInState extends State<SignIn> {
                       Container(
                         margin: EdgeInsets.symmetric(horizontal: 16.0),
                         child: Text(
-                          'Don\'t Have an Account ?',
+                          'Already Have an Account ?',
                           style: TextStyle(
-                              color: Colors.black45,
+                            color: Colors.black45,
                           ),
                         ),
                       ),
@@ -154,7 +152,7 @@ class _SignInState extends State<SignIn> {
                   margin: EdgeInsets.only(bottom: 32.0, top: 16.0),
                   child: OutlineButton(
                       child: Text(
-                        'Register',
+                        'Login',
                         style: TextStyle(color: Colors.blue[800]),
                       ),
                       borderSide: BorderSide(

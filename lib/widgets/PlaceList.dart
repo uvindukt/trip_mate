@@ -144,7 +144,7 @@ class _PlacesState extends State<Places> {
           borderRadius: BorderRadius.circular(10.0),
         ),
         elevation: 5,
-        margin: EdgeInsets.all(10),
+        margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
       ),
     );
   }

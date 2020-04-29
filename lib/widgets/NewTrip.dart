@@ -18,7 +18,7 @@ class NewTripState extends State<NewTrip> {
 
   final _formKey = GlobalKey<FormState>();
   String _location;
-  DateTime _selectedDate = DateTime.now();
+  DateTime _selectedDate;
   String _title;
   num _budget;
   String _notes;
@@ -26,13 +26,10 @@ class NewTripState extends State<NewTrip> {
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
-        initialDate: _selectedDate,
+        initialDate: DateTime.now(),
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != _selectedDate)
-      setState(() {
-        _selectedDate = picked;
-      });
+    if (picked != null) setState(() => _selectedDate = picked);
   }
 
   @override
@@ -195,7 +192,7 @@ class NewTripState extends State<NewTrip> {
                                           .map<DropdownMenuItem<String>>(
                                               (DocumentSnapshot document) {
                                         return DropdownMenuItem<String>(
-                                          value: document.data['name'],
+                                          value: document.documentID,
                                           child: Text(document.data['name']),
                                         );
                                       }).toList(),
@@ -242,8 +239,10 @@ class NewTripState extends State<NewTrip> {
                                 : MediaQuery.of(context).size.width * 0.8,
                             child: OutlineButton(
                               onPressed: () => _selectDate(context),
-                              child: Text(
-                                  '${_selectedDate.toLocal()}'.split(' ')[0]),
+                              child: _selectedDate == null
+                                  ? Text('Select a date')
+                                  : Text('${_selectedDate.toLocal()}'
+                                      .split(' ')[0]),
                               color: Colors.blue,
                               textColor: Colors.black,
                             ),
@@ -295,7 +294,8 @@ class NewTripState extends State<NewTrip> {
                               if (_formKey.currentState.validate()) {
                                 // If the form is valid, display a Snack bar.
 
-                                if (_location != null) {
+                                if (_location != null &&
+                                    _selectedDate != null) {
                                   _tripService.addTrip(
                                       _title,
                                       _notes,
@@ -309,7 +309,9 @@ class NewTripState extends State<NewTrip> {
                                   Navigator.of(context).pop();
                                 } else {
                                   Scaffold.of(context).showSnackBar(SnackBar(
-                                      content: Text('Slect a location')));
+                                      content: _location == null
+                                          ? Text('Please select a location')
+                                          : Text('Please select a date')));
                                 }
                               }
                             },

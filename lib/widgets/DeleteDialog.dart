@@ -17,22 +17,21 @@ class DeleteDialogState extends State<DeleteDialog>
   static String tripCollection = "trips";
   TripService _tripService = TripService(tripCollection);
 
-  AnimationController controller;
+  AnimationController animationController;
   Animation<double> animation;
 
   @override
   void initState() {
     super.initState();
 
-    controller =
+    animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 350));
-    animation = CurvedAnimation(parent: controller, curve: Curves.decelerate);
+    animation =
+        CurvedAnimation(parent: animationController, curve: Curves.decelerate);
 
-    controller.addListener(() {
-      setState(() {});
-    });
+    animationController.addListener(() => setState(() {}));
 
-    controller.forward();
+    animationController.forward();
   }
 
   @override
@@ -41,28 +40,30 @@ class DeleteDialogState extends State<DeleteDialog>
       child: Material(
         color: Colors.transparent,
         child: ScaleTransition(
-            scale: animation,
-            child: AlertDialog(
-              title: Text(
-                'Delete',
-                style: TextStyle(fontWeight: FontWeight.bold),
+          scale: animation,
+          child: AlertDialog(
+            title: Text(
+              'Delete',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            elevation: 24,
+            content: Text('Do you want to delete ${widget.trip.title}?'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('NO'),
+                onPressed: () => Navigator.of(context).pop(),
               ),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8)),
-              elevation: 24,
-              content: Text('Do you want to delete ${widget.trip.title}?'),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text('NO'),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-                FlatButton(
-                    child: Text('YES'),
-                    onPressed: () {
-                      _tripService.delete(widget.trip);
-                    }),
-              ],
-            )),
+              FlatButton(
+                  child: Text('YES'),
+                  onPressed: () async {
+                    await _tripService.delete(widget.trip);
+                    Navigator.of(context).pop();
+                  }),
+            ],
+          ),
+        ),
       ),
     );
   }

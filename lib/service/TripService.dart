@@ -11,6 +11,13 @@ class TripService {
     return Firestore.instance.collection(collectionName).snapshots();
   }
 
+  getTripLocation(Trip trip) {
+    return Firestore.instance
+        .collection("locations")
+        .document(trip.location)
+        .snapshots();
+  }
+
   // Add a new trip.
   addTrip(
       String title, String notes, num budget, String date, String location) {

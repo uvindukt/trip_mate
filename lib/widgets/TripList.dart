@@ -55,22 +55,40 @@ class TripsState extends State<Trips> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Row(
           children: <Widget>[
-            Container(
-                width:
-                    MediaQuery.of(context).orientation == Orientation.portrait
+            StreamBuilder(
+              stream: _tripService.getTripLocation(trip),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Container(
+                    width: MediaQuery.of(context).orientation ==
+                            Orientation.portrait
                         ? MediaQuery.of(context).size.width * 0.33
                         : MediaQuery.of(context).size.width * 0.16,
-                height: 130,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      bottomLeft: Radius.circular(10)),
-                  child: FittedBox(
-                    child: Image.asset(
-                        'assets/images/location-${trip.location.toLowerCase()}.jpg'),
-                    fit: BoxFit.fill,
-                  ),
-                )),
+                    height: 130,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                } else {
+                  return Container(
+                    width: MediaQuery.of(context).orientation ==
+                            Orientation.portrait
+                        ? MediaQuery.of(context).size.width * 0.33
+                        : MediaQuery.of(context).size.width * 0.16,
+                    height: 130,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          bottomLeft: Radius.circular(10)),
+                      image: DecorationImage(
+                        image: AssetImage(snapshot.data['image']),
+                        fit: BoxFit.fitHeight,
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
             Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -108,9 +126,18 @@ class TripsState extends State<Trips> {
                               ),
                             ),
                           ),
-                          Text(
-                            trip.location,
-                            style: TextStyle(color: Colors.grey),
+                          StreamBuilder(
+                            stream: _tripService.getTripLocation(trip),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return Text('Loading...');
+                              } else {
+                                return Text(
+                                  snapshot.data['name'],
+                                  style: TextStyle(color: Colors.grey),
+                                );
+                              }
+                            },
                           ),
                         ],
                       )),

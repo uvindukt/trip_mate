@@ -18,7 +18,16 @@ class TripMate extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: _title,
       theme: ThemeData(fontFamily: 'GoogleSans'),
-      home: BottomNavState(),
+      home: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent, // transparent status bar
+          systemNavigationBarColor: Colors.transparent, // navigation bar color
+          statusBarIconBrightness: Brightness.dark, // status bar icons' color
+          systemNavigationBarIconBrightness:
+              Brightness.dark, //navigation bar icons' color
+        ),
+        child: BottomNavState(),
+      ),
     );
   }
 }
@@ -73,10 +82,10 @@ class _BottomNavStateState extends State<BottomNavState> {
               fontSize: 24.0,
               letterSpacing: 0.25),
         ),
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
+        brightness: Brightness.light,
         elevation: 0,
         centerTitle: true,
-        brightness: Brightness.dark,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.favorite, color: Colors.black45),
@@ -90,6 +99,7 @@ class _BottomNavStateState extends State<BottomNavState> {
           ),
         ],
       ),
+      backgroundColor: Colors.white,
       body: Center(
         child: _widgetItems.elementAt(_selectedItem),
       ),

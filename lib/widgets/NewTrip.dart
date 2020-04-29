@@ -46,7 +46,7 @@ class NewTripState extends State<NewTrip> {
               fontSize: 24.0,
               letterSpacing: 0.25),
         ),
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
         brightness: Brightness.light,
@@ -55,6 +55,7 @@ class NewTripState extends State<NewTrip> {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
+      backgroundColor: Colors.white,
       body: Builder(
         builder: (context) => Padding(
           padding: EdgeInsets.fromLTRB(20, 30, 20, 10),
@@ -72,7 +73,7 @@ class NewTripState extends State<NewTrip> {
                             ? MediaQuery.of(context).size.width * 0.5
                             : MediaQuery.of(context).size.width * 0,
                         child: FittedBox(
-                          child: Image.asset('assets/images/trip_plan.png'),
+                          child: Image.asset('assets/images/trip_plan.gif'),
                           fit: BoxFit.fill,
                         ),
                       ),

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tripmate/model/Trip.dart';
 import 'package:tripmate/service/TripService.dart';
+import 'package:tripmate/widgets/DeleteDialog.dart';
 
 class Trips extends StatefulWidget {
   Trips() : super();
@@ -14,9 +15,9 @@ class Trips extends StatefulWidget {
 class TripsState extends State<Trips> {
   bool showTextField = false;
   TextEditingController controller = TextEditingController();
-  static String collectionName = "trips";
+  static String tripCollection = "trips";
   bool isEditing = false;
-  TripService _tripService = TripService(collectionName);
+  TripService _tripService = TripService(tripCollection);
 
   Widget buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -29,7 +30,10 @@ class TripsState extends State<Trips> {
           print("Trips ${snapshot.data.documents.length}");
           return buildList(context, snapshot.data.documents);
         }
-        return CircularProgressIndicator();
+        return Padding(
+          padding: EdgeInsets.only(top: 50),
+          child: CircularProgressIndicator(),
+        );
       },
     );
   }
@@ -164,7 +168,12 @@ class TripsState extends State<Trips> {
                             child: const Text('DELETE'),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5)),
-                            onPressed: () {/* ... */},
+                            onPressed: () => showDialog(
+                              context: context,
+                              barrierDismissible: true,
+                              builder: (BuildContext context) =>
+                                  DeleteDialog(trip),
+                            ),
                           ),
                         ],
                       ),

@@ -30,10 +30,7 @@ class TripsState extends State<Trips> {
           print("Trips ${snapshot.data.documents.length}");
           return buildList(context, snapshot.data.documents);
         }
-        return Padding(
-          padding: EdgeInsets.only(top: 50),
-          child: CircularProgressIndicator(),
-        );
+        return CircularProgressIndicator();
       },
     );
   }
@@ -194,7 +191,9 @@ class TripsState extends State<Trips> {
       child: Column(
         children: <Widget>[
           Flexible(
-            child: buildBody(context),
+            child: Center(
+              child: buildBody(context),
+            ),
           ),
         ],
       ),

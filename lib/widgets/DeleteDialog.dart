@@ -25,7 +25,7 @@ class DeleteDialogState extends State<DeleteDialog>
     super.initState();
 
     controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+        AnimationController(vsync: this, duration: Duration(milliseconds: 350));
     animation = CurvedAnimation(parent: controller, curve: Curves.decelerate);
 
     controller.addListener(() {
@@ -60,7 +60,6 @@ class DeleteDialogState extends State<DeleteDialog>
                     child: Text('YES'),
                     onPressed: () {
                       _tripService.delete(widget.trip);
-                      Navigator.of(context).pop();
                     }),
               ],
             )),

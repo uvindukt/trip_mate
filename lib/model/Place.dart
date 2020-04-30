@@ -5,6 +5,7 @@ class Place {
   String image;
   String location;
   String description;
+  bool favourite;
   DocumentReference reference;
 
   Place({this.name, this.image});
@@ -17,7 +18,9 @@ class Place {
         assert(map['location'] != null),
         location = map['location'],
         assert(map['description'] != null),
-        description = map['description'];
+        description = map['description'],
+        assert(map['favourite'] != null),
+        favourite = map['favourite'];
 
   Place.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
@@ -27,7 +30,8 @@ class Place {
       'name': name,
       'image': image,
       'location': location,
-      'description': description
+      'description': description,
+      'favourite': favourite,
     };
   }
 }

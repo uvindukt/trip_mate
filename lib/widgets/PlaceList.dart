@@ -18,10 +18,17 @@ class _PlacesState extends State<Places> {
   final snackBar = SnackBar(content: Text('Clicked!'));
   var _icon = Icons.favorite_border;
   var _color = Colors.black45;
-  var _clicked = false;
+
+  PlaceService _placeService;
+
+  updatePlace(Place place) async {
+    await _placeService
+        .updatePlaceDocument(place.reference.documentID, place.toJson());
+  }
 
   @override
   Widget build(BuildContext context) {
+    _placeService = PlaceService(widget.docId);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -48,7 +55,7 @@ class _PlacesState extends State<Places> {
 
   Widget buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: PlaceService(widget.docId).getLocations(),
+      stream: _placeService.streamPlaceCollection(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Text('Error ${snapshot.error}');
@@ -70,6 +77,15 @@ class _PlacesState extends State<Places> {
 
   Widget buildListItem(BuildContext context, DocumentSnapshot data) {
     final place = Place.fromSnapshot(data);
+
+    if (place.favourite) {
+      _icon = Icons.favorite;
+      _color = Colors.red;
+    } else{
+      _icon = Icons.favorite_border;
+      _color = Colors.black45;
+    }
+
     return Container(
       child: Card(
         semanticContainer: true,
@@ -108,20 +124,24 @@ class _PlacesState extends State<Places> {
                   IconButton(
                     icon: Icon(_icon, color: _color),
                     onPressed: () {
-                      if (!_clicked) {
-                        Scaffold.of(context).showSnackBar(snackBar);
-                        setState(() {
-                          _icon = Icons.favorite;
-                          _color = Colors.red;
-                          _clicked = true;
-                        });
-                      } else {
-                        setState(() {
-                          _icon = Icons.favorite_border;
-                          _color = Colors.black45;
-                          _clicked = false;
-                        });
-                      }
+                      Scaffold.of(context).showSnackBar(
+                          SnackBar(
+                              behavior: SnackBarBehavior.floating,
+                              content: place.favourite ?
+                              Text('${place.name} removed from favourites') :
+                              Text('${place.name} added to favourites')
+                          )
+                      );
+
+                      Place updPlace = Place.fromMap({
+                        'name': place.name,
+                        'image': place.image,
+                        'location': place.location,
+                        'description': place.description,
+                        'favourite': !place.favourite,
+                      }, reference: place.reference);
+
+                      updatePlace(updPlace);
                     },
                   )
                 ],

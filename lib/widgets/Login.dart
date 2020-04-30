@@ -1,59 +1,152 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:flushbar/flushbar.dart';
+import 'package:tripmate/model/User.dart';
 import 'package:tripmate/service/UserService.dart';
-import 'package:tripmate/widgets/LoadingScreen.dart';
 import 'package:tripmate/service/AuthService.dart';
 
 class LoginCard extends StatefulWidget {
+  LoginCard() : super();
+
   @override
   _LoginCardState createState() => _LoginCardState();
 }
 
 class _LoginCardState extends State<LoginCard> {
-  String uid = "3whLNOdDuochLPkSMX1GvoXb4sU2";
-  String name = "";
-
   final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
+
+  String _username = '';
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: UserService(userId: uid).getUser(),
-      builder: (context, snapshot) {
-        if(snapshot.hasError) {
-          print(snapshot.hasError);
-        }
-        if(snapshot.hasData) {
+    final loggedUser = Provider.of<User>(context);
+    UserService _userService = UserService(userId: loggedUser.userId);
+
+    return FutureBuilder<User>(
+      future: _userService.getUser(),
+      builder: (context, user) {
+        if(user.hasData) {
           return Container(
             alignment: Alignment.topCenter,
             child: SingleChildScrollView(
               child: Container(
                 padding: EdgeInsets.all(16.0),
                 child: Form(
+                  key: _formKey,
                   child: Column(
                     children: <Widget>[
                       Container(
-                        width: MediaQuery.of(context).size.width / 2,
-                        height: MediaQuery.of(context).size.width / 2,
                         alignment: Alignment.topCenter,
                         child: Image.asset(
-                          'assets/images/man.gif',
+                          'assets/images/gif-05.gif',
                           fit: BoxFit.fill,
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.all(16.0),
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            isDense: true,
-                            labelText: 'Username',
-                            prefixIcon: Icon(Icons.person),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                          ),
-                          validator: (val) => val.isEmpty ? 'Enter an username' : null,
-                          onChanged: (val) {
-                            /*setState(() => email = val);*/
-                          },
+                        margin: EdgeInsets.only(
+                            top: 28.0,
+                            left: 16.0,
+                            right: 16.0,
+                            bottom: 16.0,
+                        ),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: TextFormField(
+                                initialValue: user.data.username,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  labelText: 'Username',
+                                  prefixIcon: Icon(Icons.person),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(5.0),
+                                    ),
+                                  ),
+                                ),
+                                validator: (val) {
+                                  if (val.isEmpty) {
+                                    return 'Enter an username';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                onChanged: (val) {
+                                  setState(() => _username = val);
+                                },
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.save, color: Colors.black45),
+                              onPressed: () {
+                                if (_formKey.currentState.validate()) {
+                                  dynamic result = _userService.upDateUser(
+                                      user.data.userId,
+                                      _username
+                                  );
+
+                                  if (result != null) {
+                                    Flushbar(
+                                      titleText: Text(
+                                        'Changed',
+                                        style: TextStyle(
+                                          color: Colors.green,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                          letterSpacing: 0.5,
+                                        ),
+                                      ),
+                                      messageText: Text(
+                                        'Username updated successfully',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 13,
+                                          letterSpacing: 0.2,
+                                        ),
+                                      ),
+                                      icon: Icon(
+                                        Icons.check,
+                                        color: Colors.green,
+                                      ),
+                                      duration: Duration(seconds: 3),
+                                      flushbarStyle: FlushbarStyle.FLOATING,
+                                      margin: EdgeInsets.all(8),
+                                      borderRadius: 8,
+                                    ).show(context);
+                                  } else {
+                                    Flushbar(
+                                      titleText: Text(
+                                        'Error',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                          letterSpacing: 0.5,
+                                        ),
+                                      ),
+                                      messageText: Text(
+                                        'Something went wrong',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 13,
+                                          letterSpacing: 0.2,
+                                        ),
+                                      ),
+                                      icon: Icon(
+                                        Icons.error_outline,
+                                        color: Colors.red,
+                                      ),
+                                      duration: Duration(seconds: 3),
+                                      flushbarStyle: FlushbarStyle.FLOATING,
+                                      margin: EdgeInsets.all(8),
+                                      borderRadius: 8,
+                                    ).show(context);
+                                  }
+                                }
+                              },
+                            )
+                          ],
                         ),
                       ),
                       Container(
@@ -71,8 +164,8 @@ class _LoginCardState extends State<LoginCard> {
             ),
           );
         }
-        return LoadingScreen();
-      },
+        return CircularProgressIndicator();
+      }
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tripmate/service/UserService.dart';
 import 'package:tripmate/widgets/LoadingScreen.dart';
+import 'package:tripmate/service/AuthService.dart';
 
 class LoginCard extends StatefulWidget {
   @override
@@ -10,6 +11,8 @@ class LoginCard extends StatefulWidget {
 class _LoginCardState extends State<LoginCard> {
   String uid = "3whLNOdDuochLPkSMX1GvoXb4sU2";
   String name = "";
+
+  final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +57,12 @@ class _LoginCardState extends State<LoginCard> {
                         ),
                       ),
                       Container(
-
+                        child: RaisedButton(
+                          child: Text('Sign Out'),
+                          onPressed: () async {
+                            await _auth.signOut();
+                          },
+                        ),
                       ),
                     ],
                   ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tripmate/service/AuthService.dart';
+import 'package:tripmate/widgets/LoadingScreen.dart';
 
 class SignUp extends StatefulWidget {
   final Function toggleView;
@@ -14,13 +15,16 @@ class _SignUpState extends State<SignUp> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
 
+  bool isLoading = false;
   String email = '';
   String password = '';
   String error = '';
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return isLoading ?
+    LoadingScreen() :
+    Scaffold(
       appBar: AppBar(
         title: const Text(
           'Sign Up',
@@ -92,7 +96,7 @@ class _SignUpState extends State<SignUp> {
                           borderRadius: BorderRadius.all(Radius.circular(5.0))),
                     ),
                     obscureText: true,
-                    validator: (val) => val.isEmpty ? 'Enter a password' : null,
+                    validator: (val) => val.length < 6 ? 'Password is too short' : null,
                     onChanged: (val) {
                       setState(() => password = val);
                     },

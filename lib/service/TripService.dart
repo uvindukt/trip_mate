@@ -2,15 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tripmate/model/Trip.dart';
 
 class TripService {
-  String collectionName;
-
-  TripService(this.collectionName);
+  String collectionName = "trips";
 
   // Get trips of an user.
   getTrips() {
     return Firestore.instance.collection(collectionName).snapshots();
   }
 
+  // Get the location of a trip.
   getTripLocation(Trip trip) {
     return Firestore.instance
         .collection("locations")
@@ -19,8 +18,7 @@ class TripService {
   }
 
   // Add a new trip.
-  addTrip(
-      String title, String notes, num budget, String date, String location) {
+  add(String title, String notes, num budget, String date, String location) {
     Trip trip = Trip(
         title: title,
         notes: notes,
@@ -41,10 +39,17 @@ class TripService {
   }
 
   // Change an existing trip.
-  update(Trip trip, String newTitle) {
+  update(Trip trip, String title, num budget, String notes, String location,
+      String date) {
     try {
       Firestore.instance.runTransaction((Transaction transaction) async {
-        await transaction.update(trip.reference, {'title': newTitle});
+        await transaction.update(trip.reference, {
+          'title': title,
+          'budget': budget,
+          'notes': notes,
+          'location': location,
+          'date': date
+        });
       });
     } catch (e) {
       print(e.toString());

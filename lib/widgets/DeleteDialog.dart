@@ -6,7 +6,7 @@ import 'package:tripmate/service/TripService.dart';
 class DeleteDialog extends StatefulWidget {
   final Trip trip;
 
-  DeleteDialog(this.trip);
+  const DeleteDialog({Key key, this.trip}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => DeleteDialogState();
@@ -14,8 +14,7 @@ class DeleteDialog extends StatefulWidget {
 
 class DeleteDialogState extends State<DeleteDialog>
     with SingleTickerProviderStateMixin {
-  static String tripCollection = "trips";
-  TripService _tripService = TripService(tripCollection);
+  TripService _tripService = TripService();
 
   AnimationController animationController;
   Animation<double> animation;

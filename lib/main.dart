@@ -80,7 +80,7 @@ class _BottomNavStateState extends State<BottomNavState> {
           style: TextStyle(
               color: Color.fromRGBO(0, 0, 0, 1),
               fontSize: 24.0,
-              letterSpacing: 0.25),
+              letterSpacing: 2),
         ),
         backgroundColor: Colors.white,
         brightness: Brightness.light,
@@ -120,10 +120,11 @@ class _BottomNavStateState extends State<BottomNavState> {
           ),
         ],
         currentIndex: _selectedItem,
-        selectedItemColor: Colors.blue[800],
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey[500],
         onTap: _onItemTapped,
-        unselectedFontSize: 13,
-        selectedFontSize: 13,
+        unselectedFontSize: 14,
+        selectedFontSize: 14,
         backgroundColor: Colors.white,
       ),
     );

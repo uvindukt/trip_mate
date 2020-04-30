@@ -61,7 +61,6 @@ class _PlacesState extends State<Places> {
           return Text('Error ${snapshot.error}');
         }
         if (snapshot.hasData) {
-          print("Locations ${snapshot.data.documents.length}");
           return buildList(context, snapshot.data.documents);
         }
         return CircularProgressIndicator();

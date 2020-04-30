@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tripmate/service/LocationService.dart';
 import 'package:tripmate/model/Location.dart';
+import 'package:tripmate/widgets/PlaceList.dart';
 
 class SearchService extends SearchDelegate<String> {
   Location _location;
+  String _docId;
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -52,47 +54,59 @@ class SearchService extends SearchDelegate<String> {
         ),
         elevation: 5,
         margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
-        child: Container(
-          height: MediaQuery.of(context).size.width * 2 / 4,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(_location.image),
-              fit: BoxFit.fitWidth,
-            ),
-          ),
+        child: InkWell(
           child: Container(
-            alignment: Alignment.bottomCenter,
-            child:Container(
-              padding: EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  colors: <Color>[
-                    Colors.black.withAlpha(0),
-                    Colors.black38,
-                    Colors.black45
+            height: MediaQuery.of(context).size.width * 2 / 4,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(_location.image),
+                fit: BoxFit.fitWidth,
+              ),
+            ),
+            child: Container(
+              alignment: Alignment.bottomCenter,
+              child:Container(
+                padding: EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: <Color>[
+                      Colors.black.withAlpha(0),
+                      Colors.black38,
+                      Colors.black45
+                    ],
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      _location.name,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    Icon(
+                      Icons.location_on,
+                      color: Colors.white70,
+                    )
                   ],
                 ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    _location.name,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                    ),
-                  ),
-                  Icon(
-                    Icons.location_on,
-                    color: Colors.white70,
-                  )
-                ],
-              ),
             ),
           ),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return Places(docId: _docId, location: _location.name);
+                  }
+                )
+            );
+          },
         ),
       ),
     );
@@ -113,6 +127,15 @@ class SearchService extends SearchDelegate<String> {
           List<DocumentSnapshot> snapshots = snapshot.data.documents;
           List<Location> locations = snapshots
               .map((data) => Location.fromSnapshot(data)).toList();
+
+          Map<String, String> documentIds = Map();
+
+          for(int i = 0 ; i < snapshots.length ; i++) {
+            String name = locations[i].name;
+            String docId = snapshots[i].documentID;
+            documentIds[name] = docId;
+          }
+
           locations = query.isEmpty ? locations : _locationMach(locations);
           return ListView.builder(
               itemCount: locations.length,
@@ -125,6 +148,7 @@ class SearchService extends SearchDelegate<String> {
                         name: locations[index].name,
                         image: locations[index].image
                     );
+                    _docId = documentIds[locations[index].name];
                     query = locations[index].name;
                     showResults(context);
                   },
@@ -145,7 +169,6 @@ class SearchService extends SearchDelegate<String> {
         temp.add(locations[i]);
       }
     }
-
     return temp;
   }
 }

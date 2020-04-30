@@ -1,13 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tripmate/model/Trip.dart';
 
 class TripService {
   String collectionName = "trips";
 
-  // Get trips of an user.
-  getTrips() {
-    return Firestore.instance.collection(collectionName).snapshots();
+  // Get trips of the current user.
+  Stream<QuerySnapshot> getTrips() async* {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    yield* Firestore.instance
+        .collection(collectionName)
+        .where('userId', isEqualTo: user.uid)
+        .snapshots();
   }
+
+  getUser() async {}
 
   // Get the location of a trip.
   getTripLocation(Trip trip) {
@@ -18,13 +25,16 @@ class TripService {
   }
 
   // Add a new trip.
-  add(String title, String notes, num budget, String date, String location) {
+  add(String title, String notes, num budget, String date,
+      String location) async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
     Trip trip = Trip(
         title: title,
         notes: notes,
         budget: budget,
         location: location,
-        date: date);
+        date: date,
+        userId: user.uid);
 
     try {
       Firestore.instance.runTransaction((Transaction transaction) async {
@@ -40,7 +50,8 @@ class TripService {
 
   // Change an existing trip.
   update(Trip trip, String title, num budget, String notes, String location,
-      String date) {
+      String date) async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
     try {
       Firestore.instance.runTransaction((Transaction transaction) async {
         await transaction.update(trip.reference, {
@@ -48,7 +59,8 @@ class TripService {
           'budget': budget,
           'notes': notes,
           'location': location,
-          'date': date
+          'date': date,
+          'userId': user.uid
         });
       });
     } catch (e) {

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tripmate/model/Trip.dart';
@@ -314,15 +315,64 @@ class UpdateTripState extends State<UpdateTrip> {
                                             _notes,
                                             _location,
                                             _date.toString().split(' ')[0]);
-
                                         Navigator.of(context).pop();
+                                        Flushbar(
+                                          titleText: Text(
+                                            'Updated',
+                                            style: TextStyle(
+                                              color: Colors.green,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                              letterSpacing: 0.5,
+                                            ),
+                                          ),
+                                          messageText: Text(
+                                            'Trip updated successfully',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 13,
+                                              letterSpacing: 0.2,
+                                            ),
+                                          ),
+                                          icon: Icon(
+                                            Icons.check,
+                                            color: Colors.green,
+                                          ),
+                                          duration: Duration(seconds: 3),
+                                          flushbarStyle: FlushbarStyle.FLOATING,
+                                          margin: EdgeInsets.all(8),
+                                          borderRadius: 8,
+                                        ).show(context);
                                       } else {
-                                        Scaffold.of(context).showSnackBar(SnackBar(
-                                            content: _location == null
-                                                ? Text(
-                                                    'Please select a location')
-                                                : Text(
-                                                    'Please select a date')));
+                                        Flushbar(
+                                          titleText: Text(
+                                            'Error',
+                                            style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                              letterSpacing: 0.5,
+                                            ),
+                                          ),
+                                          messageText: Text(
+                                            _location == null
+                                                ? 'Please select a location'
+                                                : 'Please select a date',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 13,
+                                              letterSpacing: 0.2,
+                                            ),
+                                          ),
+                                          icon: Icon(
+                                            Icons.error_outline,
+                                            color: Colors.red,
+                                          ),
+                                          duration: Duration(seconds: 3),
+                                          flushbarStyle: FlushbarStyle.FLOATING,
+                                          margin: EdgeInsets.all(8),
+                                          borderRadius: 8,
+                                        ).show(context);
                                       }
                                     }
                                   },

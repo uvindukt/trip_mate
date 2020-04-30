@@ -29,7 +29,18 @@ class TripsState extends State<Trips> {
         }
         if (snapshot.hasData) {
           print("Trips ${snapshot.data.documents.length}");
-          return buildList(context, snapshot.data.documents);
+          if (snapshot.data.documents.length == 0) {
+            return Text(
+              'You have no planned trips.',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 16,
+                letterSpacing: 1,
+              ),
+            );
+          } else {
+            return buildList(context, snapshot.data.documents);
+          }
         }
         return CircularProgressIndicator();
       },
@@ -135,7 +146,7 @@ class TripsState extends State<Trips> {
                                 builder: (context, snapshot) {
                                   if (!snapshot.hasData) {
                                     return Text(
-                                      'Loading...',
+                                      '...',
                                       style: TextStyle(color: Colors.grey),
                                     );
                                   } else {

@@ -1,3 +1,4 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tripmate/model/Trip.dart';
@@ -59,6 +60,33 @@ class DeleteDialogState extends State<DeleteDialog>
                   onPressed: () async {
                     await _tripService.delete(widget.trip);
                     Navigator.of(context).pop();
+                    Flushbar(
+                      titleText: Text(
+                        'Deleted',
+                        style: TextStyle(
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                      messageText: Text(
+                        'Trip deleted successfully',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          letterSpacing: 0.2,
+                        ),
+                      ),
+                      icon: Icon(
+                        Icons.delete_outline,
+                        color: Colors.green,
+                      ),
+                      duration: Duration(seconds: 3),
+                      flushbarStyle: FlushbarStyle.FLOATING,
+                      margin: EdgeInsets.all(8),
+                      borderRadius: 8,
+                    ).show(context);
                   }),
             ],
           ),

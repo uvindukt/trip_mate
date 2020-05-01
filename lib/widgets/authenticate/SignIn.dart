@@ -27,7 +27,7 @@ class _SignInState extends State<SignIn> {
     Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Sign In',
+          'TripMate',
           style: TextStyle(
               color: Color.fromRGBO(0, 0, 0, 1),
               fontSize: 24.0,
@@ -52,23 +52,27 @@ class _SignInState extends State<SignIn> {
             key: _formKey,
             child: Column(
               children: <Widget>[
-                Image.asset(
-                  'assets/images/location-mirissa.jpg',
-                  fit: BoxFit.fill,
-                ),
                 Container(
-                  margin: EdgeInsets.only(top: 16.0, left: 16.0),
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    'TripMate',
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        letterSpacing: 0.15,
-                        fontWeight: FontWeight.w500),
+                  margin: EdgeInsets.only(top: 16.0),
+                  child: Image.asset(
+                    'assets/images/gif-04.gif',
+                    fit: BoxFit.fill,
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.all(16.0),
+                  margin: EdgeInsets.only(top: 16.0),
+                  child: Text(
+                    'Sign in with your TripMate Account',
+                    style: TextStyle(
+                        color: Colors.black45,
+                        fontSize: 16.0,
+                        letterSpacing: 0.5,
+                        fontWeight: FontWeight.w500
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
                   child: TextFormField(
                     decoration: InputDecoration(
                       isDense: true,
@@ -85,7 +89,7 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.all(16.0),
+                  margin: EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
                   child: TextFormField(
                     decoration: InputDecoration(
                       isDense: true,
@@ -103,76 +107,52 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(bottom: 16.0, top: 8.0),
-                  child: RaisedButton(
-                      color: Colors.blue[800],
-                      child: Text(
-                        'Login',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onPressed: () async {
-                        if (_formKey.currentState.validate()) {
-                          setState(() {
-                            isLoading = true;
-                          });
-
-                          dynamic result = _auth.signIn(email, password);
-
-                          if (result == null) {
-                            setState(() {
-                              error = 'User details don\'t mach';
-                              isLoading = false;
-                            });
-                          }
-                        }
-                      }),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 32),
+                  margin: EdgeInsets.only(left: 32.0, right: 32.0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Expanded(
-                        flex: 3,
-                        child: Divider(
-                          color: Colors.black45,
-                          thickness: 1,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 16.0),
+                      InkWell(
                         child: Text(
-                          'Don\'t Have an Account ?',
+                          'Don\'t have an account ?',
                           style: TextStyle(
-                            color: Colors.black45,
+                              color: Colors.blue,
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 0.1
                           ),
                         ),
+                        onTap: () => widget.toggleView(),
                       ),
-                      Expanded(
-                        flex: 3,
-                        child: Divider(
-                          color: Colors.black45,
-                          thickness: 1,
-                        ),
-                      )
+                      Container(
+                        margin: EdgeInsets.only(bottom: 16.0, top: 8.0),
+                        child: RaisedButton(
+                            color: Colors.blue,
+                            child: Text(
+                              'Login',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            onPressed: () async {
+                              if (_formKey.currentState.validate()) {
+                                setState(() {
+                                  isLoading = true;
+                                });
+
+                                dynamic result = _auth.signIn(email, password);
+
+                                if (result == null) {
+                                  setState(() {
+                                    error = 'User details don\'t mach';
+                                    isLoading = false;
+                                  });
+                                }
+                              }
+                            }),
+                      ),
                     ],
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(bottom: 32.0, top: 16.0),
-                  child: OutlineButton(
-                      child: Text(
-                        'Register',
-                        style: TextStyle(color: Colors.blue[800]),
-                      ),
-                      borderSide: BorderSide(
-                        color: Colors.blue[800],
-                      ),
-                      onPressed: () {
-                        widget.toggleView();
-                      }),
-                ),
-                Container(
-                  margin: EdgeInsets.only(bottom: 32.0),
+                  margin: EdgeInsets.only(bottom: 16.0),
                   child: Text(
                     error,
                     style: TextStyle(color: Colors.red, fontSize: 14.0),

@@ -3,18 +3,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tripmate/model/Location.dart';
 import 'package:tripmate/service/LocationService.dart';
-import 'package:tripmate/widgets/PlaceList.dart';
+import 'package:tripmate/widgets/place/PlaceList.dart';
 
-class Locations extends StatefulWidget {
+/// Implementation of the [LocationList] widget.
+/// Returns a [Scaffold] widget.
+class LocationList extends StatefulWidget {
   @override
-  _LocationsState createState() => _LocationsState();
+  _LocationListState createState() => _LocationListState();
 }
 
-class _LocationsState extends State<Locations> {
+/// State of the [LocationList] widget.
+class _LocationListState extends State<LocationList> {
   static String collectionName = "locations";
   LocationService _locationService = LocationService(collectionName);
 
-  Widget buildBody(BuildContext context) {
+  /// Fetches [Location]s from the Firebase instance and displays them as a list.
+  Widget _buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: _locationService.getLocations(),
       builder: (context, snapshot) {
@@ -22,20 +26,22 @@ class _LocationsState extends State<Locations> {
           return Text('Error ${snapshot.error}');
         }
         if (snapshot.hasData) {
-          return buildList(context, snapshot.data.documents);
+          return _buildList(context, snapshot.data.documents);
         }
         return CircularProgressIndicator();
       },
     );
   }
 
-  Widget buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
+  /// Builds a list of [Location]s.
+  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
     return ListView(
-      children: snapshot.map((data) => buildListItem(context, data)).toList(),
+      children: snapshot.map((data) => _buildListItem(context, data)).toList(),
     );
   }
 
-  Widget buildListItem(BuildContext context, DocumentSnapshot data) {
+  /// Builds [Location] items, to display in the list.
+  Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
     final location = Location.fromSnapshot(data);
     return Container(
       child: Card(
@@ -93,12 +99,10 @@ class _LocationsState extends State<Locations> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => Places(
-                      docId: data.documentID,
-                      location: location.name,
-                    )
-                )
-            );
+                    builder: (context) => PlaceList(
+                          docId: data.documentID,
+                          location: location.name,
+                        )));
           },
         ),
       ),
@@ -108,7 +112,7 @@ class _LocationsState extends State<Locations> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: buildBody(context),
+      child: _buildBody(context),
     );
   }
 }

@@ -1,36 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:tripmate/service/SearchService.dart';
-import 'package:tripmate/widgets/LocationList.dart';
-import 'package:tripmate/widgets/Login.dart';
-import 'package:tripmate/widgets/NewTrip.dart';
-import 'package:tripmate/widgets/TripList.dart';
+import 'package:tripmate/widgets/account/Account.dart';
+import 'package:tripmate/widgets/location/LocationList.dart';
+import 'package:tripmate/widgets/trip/NewTrip.dart';
+import 'package:tripmate/widgets/trip/TripList.dart';
 
-class BottomNavState extends StatefulWidget {
-  BottomNavState({Key key}) : super(key: key);
+/// Implementation [BottomNavBar] widget.
+/// Returns a [Scaffold] widget.
+class BottomNavBar extends StatefulWidget {
+  BottomNavBar({Key key}) : super(key: key);
 
   @override
-  _BottomNavStateState createState() => _BottomNavStateState();
+  _BottomNavBarState createState() => _BottomNavBarState();
 }
 
-class _BottomNavStateState extends State<BottomNavState> {
+/// State of the [BottomNavBar] widget.
+class _BottomNavBarState extends State<BottomNavBar> {
   int _selectedItem = 0;
 
   static const TextStyle itemStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.w100);
 
   static List<Widget> _widgetItems = <Widget>[
-    Locations(),
-    Trips(),
-    LoginCard(),
+    LocationList(),
+    TripList(),
+    Account(),
   ];
 
+  /// Changes the state of the [BottomNavBar] according to selected tab.
   void _onItemTapped(int index) {
     setState(() {
       _selectedItem = index;
     });
   }
 
-  Widget buildTripFab() {
+  /// Returns a [FloatingActionButton] only when Trips tab is selected at the [BottomNavBar] widget.
+  Widget _buildTripFab() {
     return _selectedItem == 1
         ? FloatingActionButton.extended(
             onPressed: () {
@@ -53,7 +58,7 @@ class _BottomNavStateState extends State<BottomNavState> {
           style: TextStyle(
               color: Color.fromRGBO(0, 0, 0, 1),
               fontSize: 24.0,
-              letterSpacing: 0.25),
+              letterSpacing: 2),
         ),
         backgroundColor: Colors.white,
         brightness: Brightness.light,
@@ -76,7 +81,7 @@ class _BottomNavStateState extends State<BottomNavState> {
       body: Center(
         child: _widgetItems.elementAt(_selectedItem),
       ),
-      floatingActionButton: buildTripFab(),
+      floatingActionButton: _buildTripFab(),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -84,7 +89,7 @@ class _BottomNavStateState extends State<BottomNavState> {
             title: Text('Explore'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.event),
+            icon: Icon(Icons.airport_shuttle),
             title: Text('Trips'),
           ),
           BottomNavigationBarItem(

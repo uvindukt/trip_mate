@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:tripmate/model/Trip.dart';
 import 'package:tripmate/service/TripService.dart';
 
+/// Implementation of the [ViewTrip] widget.
+/// Takes a [Trip] object and a [TripService] object as parameters.
+/// Returns a [Scaffold] widget.
 class ViewTrip extends StatelessWidget {
   final Trip trip;
   final TripService tripService;
@@ -171,7 +174,7 @@ class ViewTrip extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        alignment: Alignment.topRight,
+                        alignment: Alignment.topCenter,
                         margin: EdgeInsets.only(bottom: 1.0),
                         child: Text(
                           'NOTES',

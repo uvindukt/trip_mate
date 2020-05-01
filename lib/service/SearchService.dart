@@ -1,16 +1,17 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tripmate/service/LocationService.dart';
+import 'package:flutter/material.dart';
 import 'package:tripmate/model/Location.dart';
-import 'package:tripmate/widgets/PlaceList.dart';
+import 'package:tripmate/service/LocationService.dart';
+import 'package:tripmate/widgets/place/PlaceList.dart';
 
+/// Implementation of the [SearchService].
 class SearchService extends SearchDelegate<String> {
   Location _location;
   String _docId;
 
   @override
   List<Widget> buildActions(BuildContext context) {
-    return[
+    return [
       IconButton(
         icon: Icon(
           Icons.clear,
@@ -65,7 +66,7 @@ class SearchService extends SearchDelegate<String> {
             ),
             child: Container(
               alignment: Alignment.bottomCenter,
-              child:Container(
+              child: Container(
                 padding: EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -98,14 +99,9 @@ class SearchService extends SearchDelegate<String> {
             ),
           ),
           onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return Places(docId: _docId, location: _location.name);
-                  }
-                )
-            );
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return PlaceList(docId: _docId, location: _location.name);
+            }));
           },
         ),
       ),
@@ -125,12 +121,12 @@ class SearchService extends SearchDelegate<String> {
         }
         if (snapshot.hasData) {
           List<DocumentSnapshot> snapshots = snapshot.data.documents;
-          List<Location> locations = snapshots
-              .map((data) => Location.fromSnapshot(data)).toList();
+          List<Location> locations =
+              snapshots.map((data) => Location.fromSnapshot(data)).toList();
 
           Map<String, String> documentIds = Map();
 
-          for(int i = 0 ; i < snapshots.length ; i++) {
+          for (int i = 0; i < snapshots.length; i++) {
             String name = locations[i].name;
             String docId = snapshots[i].documentID;
             documentIds[name] = docId;
@@ -146,15 +142,13 @@ class SearchService extends SearchDelegate<String> {
                   onTap: () {
                     _location = Location(
                         name: locations[index].name,
-                        image: locations[index].image
-                    );
+                        image: locations[index].image);
                     _docId = documentIds[locations[index].name];
                     query = locations[index].name;
                     showResults(context);
                   },
                 );
-              }
-          );
+              });
         }
         return CircularProgressIndicator();
       },

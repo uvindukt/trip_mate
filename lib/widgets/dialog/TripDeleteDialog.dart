@@ -4,34 +4,38 @@ import 'package:flutter/material.dart';
 import 'package:tripmate/model/Trip.dart';
 import 'package:tripmate/service/TripService.dart';
 
-class DeleteDialog extends StatefulWidget {
+/// Implementation of the [TripDeleteDialog] widget.
+/// Takes a [Trip] object as a parameter.
+/// Returns a [AlertDialog] widget, with some wrappers around it.
+class TripDeleteDialog extends StatefulWidget {
   final Trip trip;
 
-  const DeleteDialog({Key key, this.trip}) : super(key: key);
+  const TripDeleteDialog({Key key, this.trip}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => DeleteDialogState();
+  State<StatefulWidget> createState() => _TripDeleteDialogState();
 }
 
-class DeleteDialogState extends State<DeleteDialog>
+/// State of the [TripDeleteDialog] widget.
+class _TripDeleteDialogState extends State<TripDeleteDialog>
     with SingleTickerProviderStateMixin {
   TripService _tripService = TripService();
 
-  AnimationController animationController;
-  Animation<double> animation;
+  AnimationController _animationController;
+  Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
 
-    animationController =
+    _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 350));
-    animation =
-        CurvedAnimation(parent: animationController, curve: Curves.decelerate);
+    _animation =
+        CurvedAnimation(parent: _animationController, curve: Curves.decelerate);
 
-    animationController.addListener(() => setState(() {}));
+    _animationController.addListener(() => setState(() {}));
 
-    animationController.forward();
+    _animationController.forward();
   }
 
   @override
@@ -40,7 +44,7 @@ class DeleteDialogState extends State<DeleteDialog>
       child: Material(
         color: Colors.transparent,
         child: ScaleTransition(
-          scale: animation,
+          scale: _animation,
           child: AlertDialog(
             title: Text(
               'Delete',

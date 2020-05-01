@@ -3,24 +3,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tripmate/model/Trip.dart';
 import 'package:tripmate/service/TripService.dart';
-import 'package:tripmate/widgets/DeleteDialog.dart';
-import 'package:tripmate/widgets/UpdateTrip.dart';
-import 'package:tripmate/widgets/ViewTrip.dart';
+import 'package:tripmate/widgets/dialog/TripDeleteDialog.dart';
+import 'package:tripmate/widgets/trip/UpdateTrip.dart';
+import 'package:tripmate/widgets/trip/ViewTrip.dart';
 
-class Trips extends StatefulWidget {
-  Trips() : super();
+/// Implementation of the [TripList] widget.
+/// Returns a [Scaffold] widget.
+class TripList extends StatefulWidget {
+  TripList() : super();
 
   @override
-  TripsState createState() => TripsState();
+  _TripListState createState() => _TripListState();
 }
 
-class TripsState extends State<Trips> {
-  bool showTextField = false;
-  TextEditingController controller = TextEditingController();
-  bool isEditing = false;
+/// State of the [TripList] widget.
+class _TripListState extends State<TripList> {
   TripService _tripService = TripService();
 
-  Widget buildBody(BuildContext context) {
+  /// Fetches [Trip]s from the Firebase instance and displays them as a list.
+  Widget _buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: _tripService.getTrips(),
       builder: (context, snapshot) {
@@ -39,7 +40,7 @@ class TripsState extends State<Trips> {
               ),
             );
           } else {
-            return buildList(context, snapshot.data.documents);
+            return _buildList(context, snapshot.data.documents);
           }
         }
         return CircularProgressIndicator();
@@ -47,18 +48,23 @@ class TripsState extends State<Trips> {
     );
   }
 
-  Widget getBottomSpace() => Container(height: 80);
+  /// Returns a empty [Container] with some height to add to the bottom of the list,
+  /// to give some reading room to the user, without conflicting
+  /// with the [FloatingActionButton] widget on top.
+  Widget _getBottomSpace() => Container(height: 80);
 
-  Widget buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
-    var list = snapshot.map((data) => buildListItem(context, data)).toList();
-    list.add(getBottomSpace());
+  /// Builds a list of [Trip]s.
+  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
+    var list = snapshot.map((data) => _buildListItem(context, data)).toList();
+    list.add(_getBottomSpace());
     return ListView(
       children: list,
     );
   }
 
-  Widget buildListItem(BuildContext context, DocumentSnapshot data) {
-    final trip = Trip.fromSnapshot(data);
+  /// Builds [Trip] items, to display in the list.
+  Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
+    final _trip = Trip.fromSnapshot(data);
     return Padding(
       key: ValueKey(data.documentID),
       padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -70,7 +76,7 @@ class TripsState extends State<Trips> {
             child: Row(
               children: <Widget>[
                 StreamBuilder(
-                  stream: _tripService.getTripLocation(trip),
+                  stream: _tripService.getTripLocation(_trip),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Container(
@@ -115,7 +121,7 @@ class TripsState extends State<Trips> {
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
                         child: Text(
-                          trip.title,
+                          _trip.title,
                           style: TextStyle(fontSize: 18),
                         ),
                       ),
@@ -142,7 +148,7 @@ class TripsState extends State<Trips> {
                                 ),
                               ),
                               StreamBuilder(
-                                stream: _tripService.getTripLocation(trip),
+                                stream: _tripService.getTripLocation(_trip),
                                 builder: (context, snapshot) {
                                   if (!snapshot.hasData) {
                                     return Text(
@@ -182,7 +188,7 @@ class TripsState extends State<Trips> {
                                 ),
                               ),
                               Text(
-                                trip.date,
+                                _trip.date,
                                 style: TextStyle(color: Colors.grey),
                               ),
                             ],
@@ -210,7 +216,7 @@ class TripsState extends State<Trips> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              UpdateTrip(trip: trip)));
+                                              UpdateTrip(trip: _trip)));
                                 },
                               ),
                               FlatButton(
@@ -221,7 +227,7 @@ class TripsState extends State<Trips> {
                                   context: context,
                                   barrierDismissible: true,
                                   builder: (BuildContext context) =>
-                                      DeleteDialog(trip: trip),
+                                      TripDeleteDialog(trip: _trip),
                                 ),
                               ),
                             ],
@@ -237,7 +243,7 @@ class TripsState extends State<Trips> {
                 context,
                 MaterialPageRoute(
                     builder: (BuildContext context) =>
-                        ViewTrip(trip: trip, tripService: _tripService))),
+                        ViewTrip(trip: _trip, tripService: _tripService))),
           )),
     );
   }
@@ -249,7 +255,7 @@ class TripsState extends State<Trips> {
         children: <Widget>[
           Flexible(
             child: Center(
-              child: buildBody(context),
+              child: _buildBody(context),
             ),
           ),
         ],

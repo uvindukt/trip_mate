@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tripmate/model/User.dart';
 
+/// Implementation of the [UserService].
 class UserService {
   final String userId;
 
@@ -8,22 +9,23 @@ class UserService {
 
   CollectionReference reference = Firestore.instance.collection("users");
 
+  /// Create user account.
   Future<DocumentReference> createUser(String userId, String username) {
-    return reference.document(userId).setData({
-      "userId": userId,
-      "username": username
-    });
+    return reference
+        .document(userId)
+        .setData({"userId": userId, "username": username});
   }
 
+  /// Get user.
   Future<User> getUser() async {
     DocumentSnapshot snapshot = await reference.document(userId).get();
     return User.fromMap(snapshot.data);
   }
 
-  Future<void> upDateUser(String userId, String username) {
-    return reference.document(userId).setData({
-      "userId": userId,
-      "username": username
-    });
+  /// Update user account.
+  Future<void> updateUser(String userId, String username) {
+    return reference
+        .document(userId)
+        .setData({"userId": userId, "username": username});
   }
 }

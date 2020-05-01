@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:tripmate/model/User.dart';
 import 'package:tripmate/service/AuthService.dart';
-import 'package:tripmate/widgets/Wrapper.dart';
+import 'package:tripmate/widgets/auth/AuthWrapper.dart';
 
 void main() => runApp(TripMate());
 
@@ -27,7 +27,7 @@ class TripMate extends StatelessWidget {
             systemNavigationBarIconBrightness:
                 Brightness.dark, //navigation bar icons' color
           ),
-          child: Wrapper(),
+          child: AuthWrapper(),
         ),
       ),
     );

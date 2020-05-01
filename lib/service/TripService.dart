@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tripmate/model/Trip.dart';
 
+/// Implementation of the [TripService].
 class TripService {
   String collectionName = "trips";
 

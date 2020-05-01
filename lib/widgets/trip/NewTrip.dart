@@ -2,20 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tripmate/model/Trip.dart';
 import 'package:tripmate/service/LocationService.dart';
 import 'package:tripmate/service/TripService.dart';
 
-class UpdateTrip extends StatefulWidget {
-  final Trip trip;
-
-  const UpdateTrip({Key key, this.trip}) : super(key: key);
-
+/// Implementation of the [NewTrip] widget.
+/// Returns a [Scaffold] widget.
+class NewTrip extends StatefulWidget {
   @override
-  UpdateTripState createState() => UpdateTripState();
+  _NewTripState createState() => _NewTripState();
 }
 
-class UpdateTripState extends State<UpdateTrip> {
+/// State of the [NewTrip] widget.
+class _NewTripState extends State<NewTrip> {
   static String locationCollection = "locations";
 
   LocationService _locationService = LocationService(locationCollection);
@@ -28,18 +26,7 @@ class UpdateTripState extends State<UpdateTrip> {
   num _budget;
   String _notes;
 
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-      _title = widget.trip.title;
-      _budget = widget.trip.budget;
-      _notes = widget.trip.notes;
-      _location = widget.trip.location;
-      _date = DateTime.parse(widget.trip.date);
-    });
-  }
-
+  /// Shows a date picker to take user input and changes state according to that.
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime pickedDate = await showDatePicker(
         context: context,
@@ -55,7 +42,7 @@ class UpdateTripState extends State<UpdateTrip> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Update Trip',
+          'New Trip',
           style: TextStyle(
               color: Color.fromRGBO(0, 0, 0, 1),
               fontSize: 24.0,
@@ -74,7 +61,7 @@ class UpdateTripState extends State<UpdateTrip> {
       body: Builder(
           builder: (context) => SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(20, 30, 20, 10),
+                  padding: EdgeInsets.fromLTRB(20, 25, 20, 10),
                   child: Container(
                     child: Form(
                       key: _formKey,
@@ -85,11 +72,10 @@ class UpdateTripState extends State<UpdateTrip> {
                             child: Container(
                               width: MediaQuery.of(context).orientation ==
                                       Orientation.portrait
-                                  ? MediaQuery.of(context).size.width * 0.5
+                                  ? MediaQuery.of(context).size.width * 0.7
                                   : MediaQuery.of(context).size.width * 0,
                               child: FittedBox(
-                                child: Image.asset(
-                                    'assets/images/update_trip.gif'),
+                                child: Image.asset('assets/images/gif-03.gif'),
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -97,7 +83,6 @@ class UpdateTripState extends State<UpdateTrip> {
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: TextFormField(
-                              initialValue: widget.trip.title,
                               expands: false,
                               autofocus: false,
                               decoration: InputDecoration(
@@ -112,15 +97,13 @@ class UpdateTripState extends State<UpdateTrip> {
                               maxLength: 20,
                               onChanged: (value) =>
                                   setState(() => _title = value),
-                              validator: (value) => value.isEmpty
-                                  ? 'Please enter a budget'
-                                  : null,
+                              validator: (value) =>
+                                  value.isEmpty ? 'Please enter a title' : null,
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: TextFormField(
-                              initialValue: widget.trip.budget.toString(),
                               expands: false,
                               autofocus: false,
                               decoration: InputDecoration(
@@ -159,7 +142,7 @@ class UpdateTripState extends State<UpdateTrip> {
                                           MainAxisAlignment.center,
                                       children: <Widget>[
                                         Padding(
-                                          padding: EdgeInsets.only(right: 4.0),
+                                          padding: EdgeInsets.only(right: 10.0),
                                           child: Container(
                                             child: Icon(
                                               Icons.location_on,
@@ -235,7 +218,7 @@ class UpdateTripState extends State<UpdateTrip> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Padding(
-                                  padding: EdgeInsets.only(right: 4.0),
+                                  padding: EdgeInsets.only(right: 10.0),
                                   child: Container(
                                     child: Icon(
                                       Icons.event,
@@ -275,8 +258,6 @@ class UpdateTripState extends State<UpdateTrip> {
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: TextFormField(
-                              initialValue: widget.trip.notes,
-                              expands: false,
                               autofocus: false,
                               minLines: 3,
                               keyboardType: TextInputType.multiline,
@@ -302,24 +283,23 @@ class UpdateTripState extends State<UpdateTrip> {
                               child: Align(
                                 alignment: Alignment.centerRight,
                                 child: RaisedButton(
-                                  color: Colors.blue,
+                                  color: Colors.green,
                                   textColor: Colors.white,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5)),
                                   onPressed: () {
                                     if (_formKey.currentState.validate()) {
                                       if (_location != null && _date != null) {
-                                        _tripService.update(
-                                            widget.trip,
+                                        _tripService.add(
                                             _title,
-                                            _budget,
                                             _notes,
-                                            _location,
-                                            _date.toString().split(' ')[0]);
+                                            _budget,
+                                            _date.toString().split(' ')[0],
+                                            _location);
                                         Navigator.of(context).pop();
                                         Flushbar(
                                           titleText: Text(
-                                            'Updated',
+                                            'Saved',
                                             style: TextStyle(
                                               color: Colors.green,
                                               fontWeight: FontWeight.bold,
@@ -328,7 +308,7 @@ class UpdateTripState extends State<UpdateTrip> {
                                             ),
                                           ),
                                           messageText: Text(
-                                            'Trip updated successfully',
+                                            'Trip added successfully',
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 13,
@@ -378,7 +358,7 @@ class UpdateTripState extends State<UpdateTrip> {
                                     }
                                   },
                                   child: Container(
-                                    width: 90,
+                                    width: 70,
                                     child: Row(
                                       children: <Widget>[
                                         Padding(
@@ -386,14 +366,14 @@ class UpdateTripState extends State<UpdateTrip> {
                                               vertical: 2, horizontal: 4),
                                           child: Container(
                                             child: Icon(
-                                              Icons.update,
+                                              Icons.done,
                                               color: Colors.white,
                                               size: 20,
                                             ),
                                           ),
                                         ),
                                         Text(
-                                          'UPDATE',
+                                          'SAVE',
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 15),

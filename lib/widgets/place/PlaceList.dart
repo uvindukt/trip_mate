@@ -4,24 +4,28 @@ import 'package:flutter/material.dart';
 import 'package:tripmate/model/Place.dart';
 import 'package:tripmate/service/PlaceService.dart';
 
-class Places extends StatefulWidget {
+/// Implementation of the [PlaceList] widget.
+/// Returns a [Scaffold] widget.
+class PlaceList extends StatefulWidget {
   final String docId;
   final String location;
 
-  const Places({Key key, this.docId, this.location}) : super(key: key);
+  const PlaceList({Key key, this.docId, this.location}) : super(key: key);
 
   @override
-  _PlacesState createState() => _PlacesState();
+  _PlaceListState createState() => _PlaceListState();
 }
 
-class _PlacesState extends State<Places> {
+/// State of the [PlaceList] widget.
+class _PlaceListState extends State<PlaceList> {
   final snackBar = SnackBar(content: Text('Clicked!'));
   var _icon = Icons.favorite_border;
   var _color = Colors.black45;
 
   PlaceService _placeService;
 
-  updatePlace(Place place) async {
+  /// Updates a place.
+  _updatePlace(Place place) async {
     await _placeService.updatePlaceDocument(
         place.reference.documentID, place.toJson());
   }
@@ -41,17 +45,18 @@ class _PlacesState extends State<Places> {
           backgroundColor: Colors.white,
           elevation: 0,
           centerTitle: true,
-          brightness: Brightness.dark,
+          brightness: Brightness.light,
           iconTheme: IconThemeData(
             color: Colors.black,
           ),
         ),
         body: Center(
-          child: buildBody(context),
+          child: _buildBody(context),
         ));
   }
 
-  Widget buildBody(BuildContext context) {
+  /// Fetches [Place]s from the Firebase instance and displays them as a list.
+  Widget _buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: _placeService.streamPlaceCollection(),
       builder: (context, snapshot) {
@@ -59,20 +64,22 @@ class _PlacesState extends State<Places> {
           return Text('Error ${snapshot.error}');
         }
         if (snapshot.hasData) {
-          return buildList(context, snapshot.data.documents);
+          return _buildList(context, snapshot.data.documents);
         }
         return CircularProgressIndicator();
       },
     );
   }
 
-  Widget buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
+  /// Builds a list of [Place]s.
+  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
     return ListView(
-      children: snapshot.map((data) => buildListItem(context, data)).toList(),
+      children: snapshot.map((data) => _buildListItem(context, data)).toList(),
     );
   }
 
-  Widget buildListItem(BuildContext context, DocumentSnapshot data) {
+  /// Builds [Place] items, to display in the list.
+  Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
     final place = Place.fromSnapshot(data);
 
     if (place.favourite) {
@@ -134,7 +141,7 @@ class _PlacesState extends State<Places> {
                           'favourite': !place.favourite,
                         }, reference: place.reference);
 
-                        updatePlace(updPlace);
+                        _updatePlace(updPlace);
                       },
                     )
                   ],

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// [Place] data model.
 class Place {
   String name;
   String image;

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// [Trip] data model.
 class Trip {
   String title;
   num budget;

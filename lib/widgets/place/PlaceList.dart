@@ -50,6 +50,7 @@ class _PlaceListState extends State<PlaceList> {
             color: Colors.black,
           ),
         ),
+        backgroundColor: Colors.white,
         body: Center(
           child: _buildBody(context),
         ));

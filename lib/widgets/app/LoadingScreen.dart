@@ -10,9 +10,9 @@ class LoadingScreen extends StatelessWidget {
     return Container(
       color: Colors.white,
       child: Center(
-        child: SpinKitChasingDots(
-          color: Colors.blue[800],
-          size: 50.0,
+        child: SpinKitRipple(
+          color: Colors.blue,
+          size: 80.0,
         ),
       ),
     );

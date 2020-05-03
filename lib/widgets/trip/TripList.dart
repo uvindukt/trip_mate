@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:tripmate/model/Trip.dart';
 import 'package:tripmate/service/TripService.dart';
 import 'package:tripmate/widgets/dialog/TripDeleteDialog.dart';
@@ -43,7 +44,10 @@ class _TripListState extends State<TripList> {
             return _buildList(context, snapshot.data.documents);
           }
         }
-        return CircularProgressIndicator();
+        return SpinKitRipple(
+          color: Colors.blue,
+          size: 80.0,
+        );
       },
     );
   }
@@ -86,7 +90,10 @@ class _TripListState extends State<TripList> {
                             : MediaQuery.of(context).size.width * 0.16,
                         height: 130,
                         child: Center(
-                          child: CircularProgressIndicator(),
+                          child: SpinKitPulse(
+                            color: Colors.blue,
+                            size: 80.0,
+                          ),
                         ),
                       );
                     } else {
@@ -122,7 +129,7 @@ class _TripListState extends State<TripList> {
                         padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
                         child: Text(
                           _trip.title,
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(fontSize: 18, letterSpacing: 0.5),
                         ),
                       ),
                     ),
@@ -138,7 +145,7 @@ class _TripListState extends State<TripList> {
                             children: <Widget>[
                               Padding(
                                 padding:
-                                    EdgeInsets.only(right: 4.0, bottom: 1.0),
+                                    EdgeInsets.only(right: 8.0, bottom: 1.0),
                                 child: Container(
                                   child: Icon(
                                     Icons.location_on,
@@ -151,14 +158,15 @@ class _TripListState extends State<TripList> {
                                 stream: _tripService.getTripLocation(_trip),
                                 builder: (context, snapshot) {
                                   if (!snapshot.hasData) {
-                                    return Text(
-                                      '...',
-                                      style: TextStyle(color: Colors.grey),
+                                    return SpinKitThreeBounce(
+                                      color: Colors.grey,
+                                      size: 10,
                                     );
                                   } else {
                                     return Text(
                                       snapshot.data['name'],
-                                      style: TextStyle(color: Colors.grey),
+                                      style: TextStyle(
+                                          color: Colors.grey, letterSpacing: 1),
                                     );
                                   }
                                 },
@@ -178,7 +186,7 @@ class _TripListState extends State<TripList> {
                             children: <Widget>[
                               Padding(
                                 padding:
-                                    EdgeInsets.only(right: 4.0, bottom: 1.0),
+                                    EdgeInsets.only(right: 8.0, bottom: 1.0),
                                 child: Container(
                                   child: Icon(
                                     Icons.event,
@@ -189,7 +197,8 @@ class _TripListState extends State<TripList> {
                               ),
                               Text(
                                 _trip.date,
-                                style: TextStyle(color: Colors.grey),
+                                style: TextStyle(
+                                    color: Colors.grey, letterSpacing: 0.5),
                               ),
                             ],
                           )),

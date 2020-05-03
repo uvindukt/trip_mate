@@ -16,27 +16,17 @@ class BottomNavBar extends StatefulWidget {
 
 /// State of the [BottomNavBar] widget.
 class _BottomNavBarState extends State<BottomNavBar> {
-  int _selectedItem = 0;
+  int _selectedTab = 0;
 
-  static const TextStyle itemStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.w100);
-
-  static List<Widget> _widgetItems = <Widget>[
+  static List<Widget> _tabs = <Widget>[
     LocationList(),
     TripList(),
     Account(),
   ];
 
-  /// Changes the state of the [BottomNavBar] according to selected tab.
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedItem = index;
-    });
-  }
-
   /// Returns a [FloatingActionButton] only when Trips tab is selected at the [BottomNavBar] widget.
   Widget _buildTripFab() {
-    return _selectedItem == 1
+    return _selectedTab == 1
         ? FloatingActionButton.extended(
             onPressed: () {
               Navigator.push(
@@ -79,7 +69,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       ),
       backgroundColor: Colors.white,
       body: Center(
-        child: _widgetItems.elementAt(_selectedItem),
+        child: _tabs.elementAt(_selectedTab),
       ),
       floatingActionButton: _buildTripFab(),
       bottomNavigationBar: BottomNavigationBar(
@@ -97,8 +87,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
             title: Text('Account'),
           ),
         ],
-        currentIndex: _selectedItem,
-        onTap: _onItemTapped,
+        currentIndex: _selectedTab,
+        onTap: (int index) => setState(() => _selectedTab = index),
         unselectedItemColor: Colors.grey[500],
         selectedItemColor: Colors.blue,
         selectedLabelStyle: TextStyle(

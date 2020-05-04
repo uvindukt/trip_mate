@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:tripmate/model/Place.dart';
 import 'package:tripmate/service/PlaceService.dart';
 
@@ -67,7 +68,10 @@ class _PlaceListState extends State<PlaceList> {
         if (snapshot.hasData) {
           return _buildList(context, snapshot.data.documents);
         }
-        return CircularProgressIndicator();
+        return SpinKitRipple(
+          color: Colors.blue,
+          size: 80.0,
+        );
       },
     );
   }

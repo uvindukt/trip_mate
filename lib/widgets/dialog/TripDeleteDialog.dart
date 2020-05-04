@@ -48,12 +48,15 @@ class _TripDeleteDialogState extends State<TripDeleteDialog>
           child: AlertDialog(
             title: Text(
               'Delete',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1),
             ),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             elevation: 24,
-            content: Text('Do you want to delete ${widget.trip.title}?'),
+            content: Text(
+              'Do you want to delete ${widget.trip.title}?',
+              style: TextStyle(letterSpacing: 0.3),
+            ),
             actions: <Widget>[
               FlatButton(
                 child: Text('NO'),

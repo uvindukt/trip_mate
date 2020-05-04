@@ -56,10 +56,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
         centerTitle: true,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.favorite, color: Colors.black45),
-            onPressed: () {},
-          ),
-          IconButton(
             icon: Icon(Icons.search, color: Colors.black45),
             onPressed: () {
               showSearch(context: context, delegate: SearchService());

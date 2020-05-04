@@ -31,8 +31,8 @@ class _NewTripState extends State<NewTrip> {
     final DateTime pickedDate = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
+        firstDate: DateTime(2020, 5),
+        lastDate: DateTime(2030));
     if (pickedDate != null && pickedDate != _date)
       setState(() => _date = pickedDate);
   }

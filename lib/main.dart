@@ -21,11 +21,9 @@ class TripMate extends StatelessWidget {
         home: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle(
             statusBarColor: Colors.transparent,
-            systemNavigationBarColor:
-                Colors.transparent,
             statusBarIconBrightness: Brightness.dark,
-            systemNavigationBarIconBrightness:
-                Brightness.dark,
+            systemNavigationBarColor: Colors.transparent,
+            systemNavigationBarIconBrightness: Brightness.dark,
           ),
           child: AuthWrapper(),
         ),

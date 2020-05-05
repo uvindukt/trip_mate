@@ -7,6 +7,7 @@ import 'package:tripmate/widgets/auth/AuthWrapper.dart';
 
 void main() => runApp(TripMate());
 
+/// Implementation of [TripMate] widget, which is the main application widget.
 class TripMate extends StatelessWidget {
   static const String _title = 'TripMate';
 

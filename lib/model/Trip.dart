@@ -18,6 +18,7 @@ class Trip {
       this.date,
       this.userId});
 
+  /// Mapping to [Trip] model from a [Map].
   Trip.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['title'] != null),
         title = map['title'],
@@ -32,9 +33,11 @@ class Trip {
         assert(map['location'] != null),
         location = map['location'];
 
+  /// Mapping to [Trip] model from a [DocumentSnapshot]
   Trip.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
 
+  /// Mapping the [Trip] model to a JSON
   toJson() {
     return {
       'title': title,

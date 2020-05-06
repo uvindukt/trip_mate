@@ -188,7 +188,7 @@ class _AccountState extends State<Account> {
                                       ),
                                     ),
                                     messageText: Text(
-                                      'Username updated successfully',
+                                      'Account details updated',
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 13,

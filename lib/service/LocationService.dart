@@ -10,4 +10,13 @@ class LocationService {
   getLocations() {
     return Firestore.instance.collection(collectionName).snapshots();
   }
+
+  /// Get a single location.
+  getLocation(String name) {
+    name ='${name[0].toUpperCase()}${name.substring(1).toLowerCase()}';
+    return Firestore.instance
+        .collection(collectionName)
+        .where('name', isEqualTo: name)
+        .snapshots();
+  }
 }

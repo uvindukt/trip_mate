@@ -150,8 +150,8 @@ class _SignInState extends State<SignIn> {
                                             isLoading = true;
                                           });
 
-                                          dynamic result =
-                                              _auth.signIn(email, password);
+                                          dynamic result = await _auth
+                                              .signIn(email, password);
 
                                           if (result == null) {
                                             setState(() {

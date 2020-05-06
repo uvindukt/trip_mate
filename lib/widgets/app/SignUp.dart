@@ -148,13 +148,14 @@ class _SignUpState extends State<SignUp> {
                                           isLoading = true;
                                         });
 
-                                        dynamic result =
-                                            _auth.signUp(email, password);
+                                        dynamic result = await _auth
+                                            .signUp(email, password);
 
                                         if (result == null) {
                                           setState(() {
                                             error =
                                                 'Please enter a valid email';
+                                            isLoading = false;
                                           });
                                         }
                                       }

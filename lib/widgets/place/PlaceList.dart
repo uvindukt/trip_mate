@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:tripmate/model/Place.dart';
 import 'package:tripmate/service/PlaceService.dart';
 
@@ -19,7 +20,6 @@ class PlaceList extends StatefulWidget {
 
 /// State of the [PlaceList] widget.
 class _PlaceListState extends State<PlaceList> {
-  final snackBar = SnackBar(content: Text('Clicked!'));
   var _icon = Icons.favorite_border;
   var _color = Colors.black45;
 
@@ -132,12 +132,6 @@ class _PlaceListState extends State<PlaceList> {
                     IconButton(
                       icon: Icon(_icon, color: _color),
                       onPressed: () {
-                        Scaffold.of(context).showSnackBar(SnackBar(
-                            behavior: SnackBarBehavior.floating,
-                            content: place.favourite
-                                ? Text('${place.name} removed from favourites')
-                                : Text('${place.name} added to favourites')));
-
                         Place updPlace = Place.fromMap({
                           'name': place.name,
                           'image': place.image,
@@ -147,6 +141,64 @@ class _PlaceListState extends State<PlaceList> {
                         }, reference: place.reference);
 
                         _updatePlace(updPlace);
+
+                        if (place.favourite) {
+                          Flushbar(
+                            titleText: Text(
+                              'Removed',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                            messageText: Text(
+                              '${place.name} removed from favourites',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                                letterSpacing: 0.2,
+                              ),
+                            ),
+                            icon: Icon(
+                              Icons.delete_outline,
+                              color: Colors.red,
+                            ),
+                            duration: Duration(seconds: 3),
+                            flushbarStyle: FlushbarStyle.FLOATING,
+                            margin: EdgeInsets.all(8),
+                            borderRadius: 8,
+                          ).show(context);
+                        } else {
+                          Flushbar(
+                            titleText: Text(
+                              'Added',
+                              style: TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                            messageText: Text(
+                              '${place.name} added to favourites',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                                letterSpacing: 0.2,
+                              ),
+                            ),
+                            icon: Icon(
+                              Icons.favorite_border,
+                              color: Colors.green,
+                            ),
+                            duration: Duration(seconds: 3),
+                            flushbarStyle: FlushbarStyle.FLOATING,
+                            margin: EdgeInsets.all(8),
+                            borderRadius: 8,
+                          ).show(context);
+                        }
                       },
                     )
                   ],

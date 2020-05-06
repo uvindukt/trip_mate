@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:tripmate/model/User.dart';
-import 'package:tripmate/service/AuthService.dart';
 import 'package:tripmate/service/UserService.dart';
 
 /// Implementation of the [Account] widget.
@@ -18,10 +17,11 @@ class Account extends StatefulWidget {
 
 /// State of the [Account] widget.
 class _AccountState extends State<Account> {
-  final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
 
   String _username = '';
+  String _phone = '';
+  String _about = '';
 
   @override
   Widget build(BuildContext context) {
@@ -32,35 +32,37 @@ class _AccountState extends State<Account> {
         future: _userService.getUser(),
         builder: (context, user) {
           if (user.hasData) {
-            return Container(
-              alignment: Alignment.topCenter,
+            return SingleChildScrollView(
               child: Container(
-                padding: EdgeInsets.all(16.0),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                          child: Column(
-                        children: <Widget>[
-                          Container(
-                            alignment: Alignment.topCenter,
-                            child: Image.asset(
-                              'assets/images/gif-02.gif',
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(
-                              top: 28.0,
-                              left: 16.0,
-                              right: 16.0,
-                              bottom: 16.0,
-                            ),
-                            child: Row(
+                height: MediaQuery.of(context).orientation ==
+                    Orientation.portrait
+                    ? MediaQuery.of(context).size.height - 136.0
+                    : MediaQuery.of(context).size.width + 136.0,
+                alignment: Alignment.topCenter,
+                child: Container(
+                  padding: EdgeInsets.all(16.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                            child: Column(
                               children: <Widget>[
-                                Expanded(
+                                Container(
+                                  alignment: Alignment.topCenter,
+                                  child: Image.asset(
+                                    'assets/images/gif-01.gif',
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(
+                                    top: 28.0,
+                                    left: 16.0,
+                                    right: 16.0,
+                                    bottom: 16.0,
+                                  ),
                                   child: TextFormField(
                                     initialValue: user.data.username,
                                     decoration: InputDecoration(
@@ -75,8 +77,9 @@ class _AccountState extends State<Account> {
                                     ),
                                     validator: (val) {
                                       if (val.isEmpty) {
-                                        return 'Enter an username';
+                                        return 'This field can\'t be empty';
                                       } else {
+                                        _username = val;
                                         return null;
                                       }
                                     },
@@ -85,106 +88,157 @@ class _AccountState extends State<Account> {
                                     },
                                   ),
                                 ),
-                                IconButton(
-                                  icon: Icon(Icons.save, color: Colors.green),
-                                  onPressed: () {
-                                    if (_formKey.currentState.validate()) {
-                                      dynamic result = _userService.updateUser(
-                                          user.data.userId, _username);
-
-                                      if (result != null) {
-                                        Flushbar(
-                                          titleText: Text(
-                                            'Updated',
-                                            style: TextStyle(
-                                              color: Colors.green,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18,
-                                              letterSpacing: 0.5,
-                                            ),
-                                          ),
-                                          messageText: Text(
-                                            'Username updated successfully',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 13,
-                                              letterSpacing: 0.2,
-                                            ),
-                                          ),
-                                          icon: Icon(
-                                            Icons.check,
-                                            color: Colors.green,
-                                          ),
-                                          duration: Duration(seconds: 3),
-                                          flushbarStyle: FlushbarStyle.FLOATING,
-                                          margin: EdgeInsets.all(8),
-                                          borderRadius: 8,
-                                        ).show(context);
+                                Container(
+                                  margin: EdgeInsets.only(left: 16,right: 16.0),
+                                  child: TextFormField(
+                                    initialValue: user.data.phone,
+                                    keyboardType: TextInputType.number,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      labelText: 'Phone',
+                                      prefixIcon: Icon(Icons.phone_android),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(5.0),
+                                        ),
+                                      ),
+                                    ),
+                                    validator: (val) {
+                                      if (val.isEmpty) {
+                                        return 'This field can\'t be empty';
                                       } else {
-                                        Flushbar(
-                                          titleText: Text(
-                                            'Error',
-                                            style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18,
-                                              letterSpacing: 0.5,
-                                            ),
-                                          ),
-                                          messageText: Text(
-                                            'Something went wrong',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 13,
-                                              letterSpacing: 0.2,
-                                            ),
-                                          ),
-                                          icon: Icon(
-                                            Icons.error_outline,
-                                            color: Colors.red,
-                                          ),
-                                          duration: Duration(seconds: 3),
-                                          flushbarStyle: FlushbarStyle.FLOATING,
-                                          margin: EdgeInsets.all(8),
-                                          borderRadius: 8,
-                                        ).show(context);
+                                        _phone = val;
+                                        return null;
                                       }
-                                    }
-                                  },
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
-                      )),
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 18),
-                        width: double.infinity,
-                        child: RaisedButton(
-                          color: Colors.blue,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.only(right: 16),
-                                child: Icon(Icons.exit_to_app,
-                                    color: Colors.white),
-                              ),
-                              Text(
-                                'Sign Out',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  letterSpacing: 1,
+                                    },
+                                    onChanged: (val) {
+                                      setState(() => _phone = val);
+                                    },
+                                  ),
                                 ),
-                              )
-                            ],
-                          ),
-                          onPressed: () async {
-                            await _auth.signOut();
-                          },
+                                Container(
+                                  margin: EdgeInsets.all(16.0),
+                                  child: TextFormField(
+                                    initialValue: user.data.about,
+                                    expands: false,
+                                    autofocus: false,
+                                    keyboardType: TextInputType.multiline,
+                                    maxLength: 100,
+                                    maxLines: null,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      labelText: 'About',
+                                      prefixIcon: Icon(Icons.create),
+                                      border: OutlineInputBorder(
+                                          borderRadius: const BorderRadius.all(
+                                              const Radius.circular(5.0)
+                                          )
+                                      ),
+                                    ),
+                                    validator: (val) {
+                                      if (val.isEmpty) {
+                                        return 'This field can\'t be empty';
+                                      } else {
+                                        _about = val;
+                                        return null;
+                                      }
+                                    },
+                                    onChanged: (val) {
+                                      setState(() => _about = val);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            )
                         ),
-                      ),
-                    ],
+                        Container(
+                          alignment: Alignment.bottomRight,
+                          margin: EdgeInsets.symmetric(horizontal: 16),
+                          child: RaisedButton.icon(
+                            icon: Icon(Icons.update, color: Colors.white),
+                            color: Colors.blue,
+                            label: Text(
+                              'UPDATE',
+                              style: TextStyle(
+                                color: Colors.white,
+                                letterSpacing: 1,
+                              ),
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5)
+                            ),
+                            onPressed: () {
+                              if (_formKey.currentState.validate()) {
+                                dynamic result = _userService.updateUser(
+                                    user.data.userId,
+                                    _username,
+                                    _phone,
+                                    _about
+                                );
+
+                                if (result != null) {
+                                  Flushbar(
+                                    titleText: Text(
+                                      'Updated',
+                                      style: TextStyle(
+                                        color: Colors.green,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        letterSpacing: 0.5,
+                                      ),
+                                    ),
+                                    messageText: Text(
+                                      'Username updated successfully',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 13,
+                                        letterSpacing: 0.2,
+                                      ),
+                                    ),
+                                    icon: Icon(
+                                      Icons.check,
+                                      color: Colors.green,
+                                    ),
+                                    duration: Duration(seconds: 3),
+                                    flushbarStyle: FlushbarStyle.FLOATING,
+                                    margin: EdgeInsets.all(8),
+                                    borderRadius: 8,
+                                  ).show(context);
+                                } else {
+                                  Flushbar(
+                                    titleText: Text(
+                                      'Error',
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        letterSpacing: 0.5,
+                                      ),
+                                    ),
+                                    messageText: Text(
+                                      'Something went wrong',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 13,
+                                        letterSpacing: 0.2,
+                                      ),
+                                    ),
+                                    icon: Icon(
+                                      Icons.error_outline,
+                                      color: Colors.red,
+                                    ),
+                                    duration: Duration(seconds: 3),
+                                    flushbarStyle: FlushbarStyle.FLOATING,
+                                    margin: EdgeInsets.all(8),
+                                    borderRadius: 8,
+                                  ).show(context);
+                                }
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

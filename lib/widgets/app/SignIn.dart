@@ -60,7 +60,7 @@ class _SignInState extends State<SignIn> {
                       child: Column(
                         children: <Widget>[
                           Container(
-                            margin: EdgeInsets.only(top: 16.0),
+                            margin: EdgeInsets.only(top: 34.0),
                             child: Image.asset(
                               'assets/images/gif-04.gif',
                               fit: BoxFit.fill,

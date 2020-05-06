@@ -60,14 +60,14 @@ class _SignUpState extends State<SignUp> {
                     child: Column(
                       children: <Widget>[
                         Container(
-                          margin: EdgeInsets.only(top: 16.0, left: 16.0),
+                          margin: EdgeInsets.only(top: 32.0),
                           child: Image.asset(
-                            'assets/images/gif-01.gif',
+                            'assets/images/gif-02.gif',
                             fit: BoxFit.fill,
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(top: 16.0, left: 16.0),
+                          margin: EdgeInsets.only(top: 16.0),
                           child: Text(
                             'Create a TripMate account',
                             style: TextStyle(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tripmate/service/SearchService.dart';
+import 'package:tripmate/service/AuthService.dart';
 import 'package:tripmate/widgets/account/Account.dart';
 import 'package:tripmate/widgets/location/LocationList.dart';
 import 'package:tripmate/widgets/trip/NewTrip.dart';
@@ -17,6 +18,7 @@ class BottomNavBar extends StatefulWidget {
 /// State of the [BottomNavBar] widget.
 class _BottomNavBarState extends State<BottomNavBar> {
   int _selectedTab = 0;
+  final AuthService _auth = AuthService();
 
   static List<Widget> _tabs = <Widget>[
     LocationList(),
@@ -61,6 +63,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
               showSearch(context: context, delegate: SearchService());
             },
           ),
+          IconButton(
+            icon: Icon(Icons.exit_to_app, color: Colors.black45),
+            onPressed: () {
+              _auth.signOut();
+            },
+          )
         ],
       ),
       backgroundColor: Colors.white,

@@ -10,10 +10,16 @@ class UserService {
   CollectionReference reference = Firestore.instance.collection("users");
 
   /// Create user account.
-  Future<DocumentReference> createUser(String userId, String username) {
+  Future<DocumentReference> createUser(String userId, String username,
+      String phone, String about) {
+
+    Map<String, String> user = {
+      "userId": userId, "username": username, 'phone': phone, 'about': about
+    };
+
     return reference
         .document(userId)
-        .setData({"userId": userId, "username": username});
+        .setData(user);
   }
 
   /// Get user.
@@ -23,9 +29,15 @@ class UserService {
   }
 
   /// Update user account.
-  Future<void> updateUser(String userId, String username) {
+  Future<void> updateUser(String userId, String username, String phone,
+      String about) {
+
+    Map<String, String> user = {
+      "userId": userId, "username": username, 'phone': phone, 'about': about
+    };
+
     return reference
         .document(userId)
-        .setData({"userId": userId, "username": username});
+        .setData(user);
   }
 }

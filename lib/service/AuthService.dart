@@ -35,7 +35,7 @@ class AuthService {
           email: email, password: password);
 
       FirebaseUser user = result.user;
-      await UserService(userId: user.uid).createUser(user.uid, email);
+      await UserService(userId: user.uid).createUser(user.uid, email, "", "");
 
       return _mapUser(user);
     } catch (e) {
